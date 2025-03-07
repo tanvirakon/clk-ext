@@ -2,7 +2,6 @@
 
 A Chrome extension with an **always-animated icon** to keep important deadlines visible at all times. The continuously moving icon serves as a gentle reminder to manage your time effectively.
 
-![Animated Icon Demo](demo.gif)
 
 ## Key Features
 
@@ -24,7 +23,7 @@ A Chrome extension with an **always-animated icon** to keep important deadlines 
 
 1. Clone this repository:
 ```bash
-git clone <repository-url>
+git clone <https://github.com/tanvirakon/clk-ext.git>
 cd ext
 ```
 
@@ -90,5 +89,4 @@ To modify the extension:
 
 MIT License - Feel free to use and modify
 
-## Author
 
