@@ -23,7 +23,7 @@ A Chrome extension with an **always-animated icon** to keep important deadlines 
 
 1. Clone this repository:
 ```bash
-git clone <https://github.com/tanvirakon/clk-ext.git>
+git clone https://github.com/tanvirakon/clk-ext.git
 cd ext
 ```
 
