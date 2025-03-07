@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Animated Icon Extension",
+  "version": "1.0",
+  "description": "An extension with a moving icon.",
+  "permissions": ["alarms", "storage", "tabs"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "action": {
+    "default_icon": "icon1.png",
+    "default_popup": "popup.html"
+  }
+}

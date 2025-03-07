@@ -1,0 +1,103 @@
+import { calculateTimeRemaining, formatTime } from "./utils.js";
+
+const targetTimeInput = document.getElementById("target-time");
+const customTimeInput = document.getElementById("custom-time");
+const setTimerButton = document.getElementById("set-timer");
+const resetTimerButton = document.getElementById("reset-timer");
+const countdownElement = document.getElementById("countdown");
+
+function updateCountdown() {
+  const targetTime = targetTimeInput.value;
+  const customTime = customTimeInput.value;
+
+  if (targetTime) {
+    const targetDate = new Date();
+    const [hours, minutes] = targetTime.split(":").map(Number);
+    targetDate.setHours(hours);
+    targetDate.setMinutes(minutes);
+    targetDate.setSeconds(0);
+
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      countdownElement.textContent = "Time is up!";
+    } else {
+      const time = calculateTimeRemaining(diff);
+      countdownElement.textContent = formatTime(
+        time.hours,
+        time.minutes,
+        time.seconds
+      );
+    }
+  } else if (customTime) {
+    const now = new Date();
+    const targetDate = new Date(now.getTime() + customTime * 60 * 1000);
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      countdownElement.textContent = "Time is up!";
+    } else {
+      const time = calculateTimeRemaining(diff);
+      countdownElement.textContent = formatTime(
+        time.hours,
+        time.minutes,
+        time.seconds
+      );
+    }
+  } else {
+    countdownElement.textContent = "Set a target time to see countdown";
+  }
+}
+
+chrome.storage.local.get("targetTime", (result) => {
+  if (result.targetTime) {
+    targetTimeInput.value = result.targetTime;
+    updateCountdown();
+  }
+});
+
+setInterval(updateCountdown, 1000);
+
+function createFloatingWindow(targetTime) {
+  chrome.windows.create({
+    url: "timer.html",
+    type: "popup",
+    width: 200,
+    height: 100,
+    left: 20,
+    top: 20,
+    focused: false,
+  });
+}
+
+resetTimerButton.addEventListener("click", () => {
+  targetTimeInput.value = "";
+  customTimeInput.value = "";
+  chrome.storage.local.remove("targetTime", () => {
+    countdownElement.textContent = "Set a target time to see countdown";
+
+    chrome.tabs.query({}, function (tabs) {
+      tabs.forEach((tab) => {
+        chrome.tabs.sendMessage(tab.id, {
+          action: "resetCountdown",
+        });
+      });
+    });
+  });
+});
+
+setTimerButton.addEventListener("click", () => {
+  const targetTime = targetTimeInput.value;
+  const customTime = customTimeInput.value;
+
+  if (targetTime) {
+    chrome.storage.local.set({ targetTime }, () => {
+      createFloatingWindow(targetTime);
+    });
+  } else if (customTime) {
+    chrome.storage.local.set({ customTime: parseInt(customTime) * 60 }, () => {
+      createFloatingWindow();
+    });
+  }
+});

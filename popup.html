@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Timer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="timer-container">
+      <input
+        type="time"
+        id="target-time"
+        class="time-input"
+        placeholder="Select time"
+      />
+      <input
+        type="number"
+        id="custom-time"
+        class="time-input"
+        placeholder="Custom time (minutes)"
+      />
+      <button id="set-timer" class="timer-button">Set Timer</button>
+      <button id="reset-timer" class="timer-button reset">Reset</button>
+      <div id="countdown" class="countdown">
+        Set a target time to see countdown
+      </div>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

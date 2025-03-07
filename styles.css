@@ -1,0 +1,91 @@
+body {
+  text-align: center;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  padding: 20px;
+  min-width: 200px;
+  color: #ffffff;
+}
+
+#clock {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 15px 0;
+  color: #ff4500; /* Naruto's headband color */
+  text-shadow: 2px 2px #000000;
+}
+
+.time {
+  padding: 10px;
+  background: #ffeb3b;
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 20px;
+  color: #000000;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+#timer-container {
+  margin-top: 20px;
+}
+
+.time-input {
+  padding: 8px;
+  border: 2px solid #ff4500;
+  border-radius: 10px;
+  font-size: 18px;
+  margin-right: 10px;
+  background: #ffffff;
+  color: #000000;
+}
+
+.timer-button {
+  padding: 10px 20px;
+  background: #1e90ff; /* DodgerBlue color */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.timer-button:hover {
+  background: #1c86ee; /* Slightly darker blue */
+}
+
+.timer-button.reset {
+  background: #f44336;
+  margin-left: 10px;
+}
+
+.timer-button.reset:hover {
+  background: #d32f2f;
+}
+
+.countdown {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #ff4500;
+  text-shadow: 1px 1px #000000;
+}
+
+button {
+  margin-top: 10px;
+}
+
+.time-up {
+  background-color: #ff3737;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.time-up #timer {
+  font-size: 48px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-shadow: 2px 2px #000000;
+}
