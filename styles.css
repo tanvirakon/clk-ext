@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-family: "Comic Sans MS", cursive, sans-serif;
   padding: 20px;
   min-width: 200px;
   color: #ffffff;
@@ -39,13 +39,13 @@ body {
 }
 
 .timer-button {
-  padding: 10px 20px;
+  padding: 6px 14px;
   background: #1e90ff; /* DodgerBlue color */
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -88,4 +88,66 @@ button {
   margin-bottom: 20px;
   color: #ffffff;
   text-shadow: 2px 2px #000000;
+}
+
+.stopwatch-container {
+  margin-top: 20px;
+  border-top: 1px solid #ff4500;
+  padding-top: 15px;
+}
+
+.timer-button.stopwatch {
+  background: #ff8c00;
+}
+
+.timer-button.stopwatch:hover {
+  background: #ff6347;
+}
+
+.stopwatch-body {
+  background-color: #f7b733;
+  padding: 10px;
+  margin: 0;
+  text-align: center;
+}
+
+.stopwatch-display {
+  margin-bottom: 10px;
+}
+
+.stopwatch-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+/* Make buttons smaller but still usable */
+.stopwatch-controls .timer-button {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+/* Style for the End button */
+.stopwatch-controls .timer-button.reset {
+  background: #f44336;
+}
+
+.stopwatch-controls .timer-button.reset:hover {
+  background: #d32f2f;
+}
+
+#stopwatch {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  background-color: #ffeb3b;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+#final-time {
+  font-size: 18px;
+  color: #ff4500;
+  margin-top: 15px;
 }

@@ -101,3 +101,23 @@ setTimerButton.addEventListener("click", () => {
     });
   }
 });
+
+// Update the stopwatch button event listener
+
+document.getElementById("start-stopwatch").addEventListener("click", () => {
+  // Create the stopwatch window
+  chrome.windows.create(
+    {
+      url: "stopwatch.html",
+      type: "popup",
+      width: 300,
+      height: 200,
+      left: 20,
+      top: 20,
+    },
+    () => {
+      // Close the popup after creating the window
+      window.close();
+    }
+  );
+});

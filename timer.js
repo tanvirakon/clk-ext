@@ -1,8 +1,16 @@
 import { calculateTimeRemaining, formatTime } from "./utils.js";
 
+// Create audio element for notification
+const notificationSound = new Audio("idiot.mp3");
+
+// Flag to track if notification has played
+let notificationPlayed = false;
+
 function updateTimer() {
   chrome.storage.local.get(["targetTime", "customTime"], (result) => {
     if (!result.targetTime && !result.customTime) {
+      // Reset notification flag when no timer is running
+      notificationPlayed = false;
       return;
     }
 
@@ -23,6 +31,15 @@ function updateTimer() {
     if (diff <= 1000) {
       document.getElementById("timer").textContent = "Time is up!";
       document.body.style.background = "rgba(220, 53, 69, 0.9)";
+
+      // Play notification sound only once when timer ends
+      if (!notificationPlayed) {
+        notificationSound.play().catch((error) => {
+          console.error("Error playing notification sound:", error);
+        });
+        notificationPlayed = true;
+      }
+
       if (result.targetTime) {
         chrome.storage.local.remove("targetTime");
       } else if (result.customTime) {
