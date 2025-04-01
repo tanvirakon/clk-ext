@@ -5,6 +5,8 @@ const notificationSound = new Audio("idiot.mp3");
 
 // Flag to track if notification has played
 let notificationPlayed = false;
+// Store the timer interval ID so we can clear it
+let timerInterval;
 
 function updateTimer() {
   chrome.storage.local.get(["targetTime", "customTime"], (result) => {
@@ -42,8 +44,12 @@ function updateTimer() {
 
       if (result.targetTime) {
         chrome.storage.local.remove("targetTime");
+        // Clear the interval to stop checking time
+        clearInterval(timerInterval);
       } else if (result.customTime) {
         chrome.storage.local.remove("customTime");
+        // Clear the interval to stop checking time
+        clearInterval(timerInterval);
       }
     } else {
       const time = calculateTimeRemaining(diff);
@@ -59,6 +65,6 @@ function updateTimer() {
   });
 }
 
-// Update every second
-setInterval(updateTimer, 1000);
+// Update every second and store the interval ID
+timerInterval = setInterval(updateTimer, 1000);
 updateTimer();

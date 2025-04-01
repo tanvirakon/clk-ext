@@ -4,7 +4,6 @@ const targetTimeInput = document.getElementById("target-time");
 const customTimeInput = document.getElementById("custom-time");
 const setTimerButton = document.getElementById("set-timer");
 const resetTimerButton = document.getElementById("reset-timer");
-const countdownElement = document.getElementById("countdown");
 
 function updateCountdown() {
   const targetTime = targetTimeInput.value;
@@ -19,34 +18,10 @@ function updateCountdown() {
 
     const now = new Date();
     const diff = targetDate - now;
-
-    if (diff <= 0) {
-      countdownElement.textContent = "Time is up!";
-    } else {
-      const time = calculateTimeRemaining(diff);
-      countdownElement.textContent = formatTime(
-        time.hours,
-        time.minutes,
-        time.seconds
-      );
-    }
   } else if (customTime) {
     const now = new Date();
     const targetDate = new Date(now.getTime() + customTime * 60 * 1000);
     const diff = targetDate - now;
-
-    if (diff <= 0) {
-      countdownElement.textContent = "Time is up!";
-    } else {
-      const time = calculateTimeRemaining(diff);
-      countdownElement.textContent = formatTime(
-        time.hours,
-        time.minutes,
-        time.seconds
-      );
-    }
-  } else {
-    countdownElement.textContent = "Set a target time to see countdown";
   }
 }
 
@@ -75,8 +50,6 @@ resetTimerButton.addEventListener("click", () => {
   targetTimeInput.value = "";
   customTimeInput.value = "";
   chrome.storage.local.remove("targetTime", () => {
-    countdownElement.textContent = "Set a target time to see countdown";
-
     chrome.tabs.query({}, function (tabs) {
       tabs.forEach((tab) => {
         chrome.tabs.sendMessage(tab.id, {
