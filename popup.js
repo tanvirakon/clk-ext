@@ -12,6 +12,17 @@ const toTimeInput = document.getElementById("to-time");
 const calculateDiffButton = document.getElementById("calculate-diff");
 const timeDifferenceElement = document.getElementById("time-difference");
 
+// Set default value for fromTimeInput to current time
+function setCurrentTimeAsDefault() {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, "0");
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  fromTimeInput.value = `${hours}:${minutes}`;
+}
+
+// Call this function when the page loads
+setCurrentTimeAsDefault();
+
 function updateCountdown() {
   const targetTime = targetTimeInput.value;
   const customTime = customTimeInput.value;
@@ -81,7 +92,6 @@ function calculateTimeDifference() {
   const fromTime = fromTimeInput.value;
   const toTime = toTimeInput.value;
 
-
   const [fromHours, fromMinutes] = fromTime.split(":").map(Number);
   const [toHours, toMinutes] = toTime.split(":").map(Number);
 
@@ -108,7 +118,6 @@ function calculateTimeDifference() {
     time.hours !== 1 ? "s" : ""
   } ${time.minutes} minute${time.minutes !== 1 ? "s" : ""}`;
 }
-
 
 // Also calculate difference when input values change
 fromTimeInput.addEventListener("change", calculateTimeDifference);
