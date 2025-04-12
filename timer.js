@@ -1,20 +1,24 @@
 import { calculateTimeRemaining, formatTime } from "./utils.js";
 
-// Create audio element for notification
 const notificationSound = new Audio("idiot.mp3");
 
-// Flag to track if notification has played
 let notificationPlayed = false;
-// Store the timer interval ID so we can clear it
 let timerInterval;
+
+// Focus the window when the timer is loaded
+window.onload = () => {
+  window.focus();
+};
 
 function updateTimer() {
   chrome.storage.local.get(["targetTime", "customTime"], (result) => {
     if (!result.targetTime && !result.customTime) {
-      // Reset notification flag when no timer is running
       notificationPlayed = false;
       return;
     }
+
+    // Focus the window again when timer values are detected
+    window.focus();
 
     let diff;
     if (result.targetTime) {
