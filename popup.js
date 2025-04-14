@@ -135,12 +135,14 @@ setTimerButton.addEventListener("click", () => {
       chrome.storage.local.set({ customTime: parseInt(customTime) * 60 });
     }
 
-    // Create the timer window
+    // Create the timer window at right side, top position
     chrome.windows.create({
       url: "timer.html",
       type: "popup",
       width: 200,
       height: 100,
+      left: screen.width - 190, // Position near right edge
+      top: 110, // Position near top
       focused: true,
     });
 
@@ -151,14 +153,14 @@ setTimerButton.addEventListener("click", () => {
 
 // Replace the stopwatch button event listener to directly call closePopup
 document.getElementById("start-stopwatch").addEventListener("click", () => {
-  // Create the stopwatch window
+  // Create the stopwatch window at right side, top position
   chrome.windows.create({
     url: "stopwatch.html",
     type: "popup",
     width: 300,
-    height: 150,
-    left: 20,
-    top: 20,
+    height: 180,
+    left: screen.width - 300, // Position near right edge
+    top: 110, // Position near top
   });
 
   // Close the popup immediately after creating the window
