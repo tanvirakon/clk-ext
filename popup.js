@@ -17,7 +17,23 @@ function setCurrentTimeAsDefault() {
   const now = new Date();
   const hours = now.getHours().toString().padStart(2, "0");
   const minutes = now.getMinutes().toString().padStart(2, "0");
-  fromTimeInput.value = `${hours}:${minutes}`;
+
+  // Load saved times from storage or use current time as default for "from"
+  chrome.storage.local.get(["fromTime", "toTime"], (result) => {
+    if (result.fromTime) {
+      fromTimeInput.value = result.fromTime;
+    } else {
+      fromTimeInput.value = `${hours}:${minutes}`;
+    }
+
+    if (result.toTime) {
+      toTimeInput.value = result.toTime;
+      // If both times are available, calculate the difference
+      if (fromTimeInput.value) {
+        calculateTimeDifference();
+      }
+    }
+  });
 }
 
 // Call this function when the page loads
@@ -92,6 +108,16 @@ function calculateTimeDifference() {
   const fromTime = fromTimeInput.value;
   const toTime = toTimeInput.value;
 
+  if (!fromTime || !toTime) {
+    return;
+  }
+
+  // Save the selected times to storage
+  chrome.storage.local.set({
+    fromTime: fromTime,
+    toTime: toTime,
+  });
+
   const [fromHours, fromMinutes] = fromTime.split(":").map(Number);
   const [toHours, toMinutes] = toTime.split(":").map(Number);
 
@@ -119,9 +145,18 @@ function calculateTimeDifference() {
   } ${time.minutes} minute${time.minutes !== 1 ? "s" : ""}`;
 }
 
-// Also calculate difference when input values change
-fromTimeInput.addEventListener("change", calculateTimeDifference);
-toTimeInput.addEventListener("change", calculateTimeDifference);
+// Also calculate difference and save values when input values change
+fromTimeInput.addEventListener("change", () => {
+  // Save the value to storage
+  chrome.storage.local.set({ fromTime: fromTimeInput.value });
+  calculateTimeDifference();
+});
+
+toTimeInput.addEventListener("change", () => {
+  // Save the value to storage
+  chrome.storage.local.set({ toTime: toTimeInput.value });
+  calculateTimeDifference();
+});
 
 // Replace the setTimerButton event listener to call startTimer
 setTimerButton.addEventListener("click", () => {
