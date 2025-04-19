@@ -17,18 +17,14 @@ function setCurrentTimeAsDefault() {
   const now = new Date();
   const hours = now.getHours().toString().padStart(2, "0");
   const minutes = now.getMinutes().toString().padStart(2, "0");
+  fromTimeInput.value = `${hours}:${minutes}`;
 
   // Load saved times from storage or use current time as default for "from"
-  chrome.storage.local.get(["fromTime", "toTime"], (result) => {
-    if (result.fromTime) {
-      fromTimeInput.value = result.fromTime;
-    } else {
-      fromTimeInput.value = `${hours}:${minutes}`;
-    }
+  chrome.storage.local.get(["toTime"], (result) => {
+    fromTimeInput.value = `${hours}:${minutes}`;
 
     if (result.toTime) {
       toTimeInput.value = result.toTime;
-      // If both times are available, calculate the difference
       if (fromTimeInput.value) {
         calculateTimeDifference();
       }
