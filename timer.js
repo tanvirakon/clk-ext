@@ -18,7 +18,6 @@ window.onload = () => {
 
 function updateTimer() {
   // Always set the from input to current time before checking storage
-  setFromInputToCurrentTime();
 
   chrome.storage.local.get(["targetTime", "customTime"], (result) => {
     if (!result.targetTime && !result.customTime) {
