@@ -13,11 +13,13 @@ A Chrome extension with an **always-animated icon** to keep important deadlines 
 ### ⏰ Dual Timer Modes
 - Target time (specific time of day)
 - Custom countdown (minutes)
+- Pause/Resume functionality for custom timers
 
 ### 📌 Additional Features
 - Floating timer window
 - Visual notifications when time is up
 - Naruto-inspired theme
+- Stopwatch with pause/resume controls
 
 ## Installation
 
@@ -31,22 +33,6 @@ cd ext
 3. Enable "Developer mode" in the top right
 4. Click "Load unpacked" and select the extension directory
 
-## Project Structure
-
-```
-ext/
-├── manifest.json     # Extension configuration
-├── background.js     # Icon animation logic
-├── popup.js         # Popup interface logic
-├── timer.js         # Timer window logic
-├── utils.js         # Shared utility functions 
-├── popup.html       # Popup interface
-├── timer.html       # Timer window
-├── styles.css       # Naruto-themed styles
-└── icons/           # Animation frames
-    ├── icon1.png    
-    └── icon2.png
-```
 
 ## How It Works
 
@@ -63,7 +49,8 @@ The extension uses Chrome's Alarms API and OffscreenCanvas to create smooth icon
    - Set a specific time (HH:MM)
    - Or set a countdown in minutes
 3. Click "Set Timer" to start
-4. Use "Reset" to cancel
+4. For custom timers, use the Pause/Resume button to control the countdown
+5. Use "Reset" to cancel
 
 ## Technical Details
 
