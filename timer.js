@@ -4,6 +4,7 @@ const notificationSound = new Audio("idiot.mp3");
 
 let notificationPlayed = false;
 let timerInterval;
+let isPaused = false; // Track if timer is paused
 
 // Focus the window when the timer is loaded
 window.onload = () => {
@@ -14,7 +15,50 @@ window.onload = () => {
   chrome.storage.local.remove("fromTime", () => {
     console.log("Cleared stored fromTime value");
   });
+  
+  // Create pause button for custom timer
+  createPauseButton();
 };
+
+function setFromInputToCurrentTime() {
+  // This function would set the from time if needed
+  // Implementation would be here if needed
+}
+
+function createPauseButton() {
+  // Create the pause button element
+  const pauseButton = document.createElement("button");
+  pauseButton.id = "pauseButton";
+  pauseButton.textContent = "Pause";
+  pauseButton.style.marginTop = "10px";
+  pauseButton.style.padding = "8px 15px";
+  pauseButton.style.cursor = "pointer";
+  pauseButton.style.backgroundColor = "#007bff";
+  pauseButton.style.color = "white";
+  pauseButton.style.border = "none";
+  pauseButton.style.borderRadius = "4px";
+  pauseButton.style.display = "none"; // Initially hidden
+  pauseButton.style.margin = "10px auto";
+  pauseButton.style.display = "block";
+  
+  // Add click handler
+  pauseButton.addEventListener("click", function() {
+    isPaused = !isPaused;
+    pauseButton.textContent = isPaused ? "Resume" : "Pause";
+    pauseButton.style.backgroundColor = isPaused ? "#28a745" : "#007bff";
+  });
+  
+  // Add to DOM after the timer
+  const timerElement = document.getElementById("timer");
+  if (timerElement) {
+    timerElement.parentNode.insertBefore(pauseButton, timerElement.nextSibling);
+  }
+  
+  // Check if this is a custom timer and show the button accordingly
+  chrome.storage.local.get(["customTime", "targetTime"], (result) => {
+    pauseButton.style.display = (result.customTime && !result.targetTime) ? "block" : "none";
+  });
+}
 
 function updateTimer() {
   // Always set the from input to current time before checking storage
@@ -27,6 +71,12 @@ function updateTimer() {
 
     // Focus the window again when timer values are detected
     window.focus();
+    
+    // Show/hide pause button based on timer type
+    const pauseButton = document.getElementById("pauseButton");
+    if (pauseButton) {
+      pauseButton.style.display = (result.customTime && !result.targetTime) ? "block" : "none";
+    }
 
     let diff;
     if (result.targetTime) {
@@ -62,6 +112,11 @@ function updateTimer() {
         chrome.storage.local.remove("customTime");
         // Clear the interval to stop checking time
         clearInterval(timerInterval);
+        
+        // Hide pause button when timer ends
+        if (pauseButton) {
+          pauseButton.style.display = "none";
+        }
       }
     } else {
       const time = calculateTimeRemaining(diff);
@@ -69,9 +124,12 @@ function updateTimer() {
       document.getElementById("timer").textContent = timeString;
 
       if (result.customTime) {
-        chrome.storage.local.set({
-          customTime: result.customTime - 1,
-        });
+        // Only decrement if not paused
+        if (!isPaused) {
+          chrome.storage.local.set({
+            customTime: result.customTime - 1,
+          });
+        }
       }
     }
   });
