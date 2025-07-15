@@ -47,7 +47,13 @@ function updateCountdown() {
     targetDate.setSeconds(0);
 
     const now = new Date();
-    const diff = targetDate - now;
+    let diff = targetDate - now;
+
+    // If the target time is earlier than now, assume it's for the next day
+    if (diff <= 0) {
+      targetDate.setDate(targetDate.getDate() + 1);
+      diff = targetDate - now;
+    }
 
     if (diff <= 0) {
       countdownElement.textContent = "Time is up!";

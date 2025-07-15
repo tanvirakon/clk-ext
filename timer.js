@@ -15,7 +15,7 @@ window.onload = () => {
   chrome.storage.local.remove("fromTime", () => {
     console.log("Cleared stored fromTime value");
   });
-  
+
   // Create pause button for custom timer
   createPauseButton();
 };
@@ -40,23 +40,24 @@ function createPauseButton() {
   pauseButton.style.display = "none"; // Initially hidden
   pauseButton.style.margin = "10px auto";
   pauseButton.style.display = "block";
-  
+
   // Add click handler
-  pauseButton.addEventListener("click", function() {
+  pauseButton.addEventListener("click", function () {
     isPaused = !isPaused;
     pauseButton.textContent = isPaused ? "Resume" : "Pause";
     pauseButton.style.backgroundColor = isPaused ? "#28a745" : "#007bff";
   });
-  
+
   // Add to DOM after the timer
   const timerElement = document.getElementById("timer");
   if (timerElement) {
     timerElement.parentNode.insertBefore(pauseButton, timerElement.nextSibling);
   }
-  
+
   // Check if this is a custom timer and show the button accordingly
   chrome.storage.local.get(["customTime", "targetTime"], (result) => {
-    pauseButton.style.display = (result.customTime && !result.targetTime) ? "block" : "none";
+    pauseButton.style.display =
+      result.customTime && !result.targetTime ? "block" : "none";
   });
 }
 
@@ -71,11 +72,12 @@ function updateTimer() {
 
     // Focus the window again when timer values are detected
     window.focus();
-    
+
     // Show/hide pause button based on timer type
     const pauseButton = document.getElementById("pauseButton");
     if (pauseButton) {
-      pauseButton.style.display = (result.customTime && !result.targetTime) ? "block" : "none";
+      pauseButton.style.display =
+        result.customTime && !result.targetTime ? "block" : "none";
     }
 
     let diff;
@@ -88,6 +90,12 @@ function updateTimer() {
 
       const now = new Date();
       diff = targetDate - now;
+
+      // If the target time is earlier than now, assume it's for the next day
+      if (diff <= 0) {
+        targetDate.setDate(targetDate.getDate() + 1);
+        diff = targetDate - now;
+      }
     } else if (result.customTime) {
       diff = result.customTime * 1000;
     }
@@ -112,7 +120,7 @@ function updateTimer() {
         chrome.storage.local.remove("customTime");
         // Clear the interval to stop checking time
         clearInterval(timerInterval);
-        
+
         // Hide pause button when timer ends
         if (pauseButton) {
           pauseButton.style.display = "none";
