@@ -6,7 +6,7 @@ let stopwatchInterval;
 let running = false;
 const stopwatchDisplay = document.getElementById("stopwatch");
 const pauseButton = document.getElementById("pause-stopwatch");
-const endButton = document.getElementById("end-stopwatch");
+const newButton = document.getElementById("new-stopwatch");
 const finalTimeDisplay = document.getElementById("final-time");
 
 // Load saved state if it exists
@@ -95,10 +95,25 @@ pauseButton.addEventListener("click", () => {
   if (running) {
     pauseStopwatch();
     pauseButton.textContent = "Start";
+    // Show new button, arrange flex
+    newButton.style.display = "inline-block";
   } else {
     startStopwatch();
     pauseButton.textContent = "Pause";
+    // Hide new button when resuming
+    newButton.style.display = "none";
   }
+});
+
+// New button resets and starts stopwatch, hides itself
+newButton.addEventListener("click", () => {
+  clearInterval(stopwatchInterval);
+  running = false;
+  elapsedTime = 0;
+  startStopwatch();
+  updateDisplay();
+  pauseButton.textContent = "Pause";
+  newButton.style.display = "none";
 });
 
 // endButton.addEventListener("click", endStopwatch);
@@ -107,7 +122,7 @@ pauseButton.addEventListener("click", () => {
 window.addEventListener("beforeunload", () => {
   // Stop the stopwatch completely when window is closed
   endStopwatch();
-}); 
+});
 
 // Start the stopwatch automatically when the page loads
 startStopwatch();

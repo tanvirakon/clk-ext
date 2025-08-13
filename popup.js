@@ -194,8 +194,8 @@ document.getElementById("start-stopwatch").addEventListener("click", () => {
   chrome.windows.create({
     url: "stopwatch.html",
     type: "popup",
-    width: 300,
-    height: 180,
+    width: 236,
+    height: 171,
     left: screen.width - 300, // Position near right edge
     top: 110, // Position near top
   });
