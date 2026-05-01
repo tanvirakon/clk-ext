@@ -204,6 +204,20 @@ document.getElementById("start-stopwatch").addEventListener("click", () => {
   closePopup();
 });
 
+// Pomodoro button — opens the pomodoro floating window
+document.getElementById("start-pomodoro").addEventListener("click", () => {
+  chrome.windows.create({
+    url: "pomodoro.html",
+    type: "popup",
+    width: 236,
+    height: 171,
+    left: screen.width - 300,
+    top: 110,
+  });
+
+  closePopup();
+});
+
 // Function to close the popup window
 function closePopup() {
   window.close();

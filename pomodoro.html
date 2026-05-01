@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Pomodoro</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 10px;
+      background: #1a1a2e;
+      color: white;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      text-align: center;
+      user-select: none;
+      transition: background 0.6s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    body.break-mode {
+      background: rgba(180, 30, 30, 0.95);
+    }
+
+    #phase-label {
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+      color: #f7b733;
+      text-transform: uppercase;
+      transition: color 0.6s ease;
+    }
+
+    body.break-mode #phase-label {
+      color: #ffcccc;
+    }
+
+    #pomodoro-timer {
+      font-size: 26px;
+      font-weight: bold;
+      background: #ffeb3b;
+      color: #000;
+      border-radius: 8px;
+      padding: 6px 12px;
+      display: inline-block;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+      margin-bottom: 8px;
+    }
+
+    #cycle-count {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    body.break-mode #cycle-count {
+      color: #ffaaaa;
+    }
+
+    #stop-pomodoro {
+      padding: 4px 6px;
+      background: #f44336;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+    }
+
+    #stop-pomodoro:hover {
+      background: #c62828;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="pomodoro-timer">50:00</div>
+  <div id="cycle-count">Cycle 1</div>
+  <button id="stop-pomodoro">Stop</button>
+
+  <script type="module" src="pomodoro.js"></script>
+</body>
+
+</html>

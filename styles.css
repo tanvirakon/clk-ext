@@ -94,6 +94,9 @@ button {
   margin-top: 20px;
   border-top: 1px solid #ff4500;
   padding-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
 }
 
 .timer-button.stopwatch {
@@ -102,6 +105,14 @@ button {
 
 .timer-button.stopwatch:hover {
   background: #ff6347;
+}
+
+.timer-button.pomodoro {
+  background: #6a0dad;
+}
+
+.timer-button.pomodoro:hover {
+  background: #7b1fa2;
 }
 
 .stopwatch-body {
