@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      padding: 10px;
+      padding: 8px;
       background: #1a1a2e;
       color: white;
       font-family: "Comic Sans MS", cursive, sans-serif;
@@ -18,8 +18,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      min-height: 100vh;
+      gap: 4px;
+      height: 100vh;
       box-sizing: border-box;
     }
 
@@ -27,30 +27,8 @@
       background: rgba(180, 30, 30, 0.95);
     }
 
-    #phase-label {
-      font-size: 13px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
-      color: #f7b733;
-      text-transform: uppercase;
-      transition: color 0.6s ease;
-    }
-
-    body.break-mode #phase-label {
-      color: #ffcccc;
-    }
-
-    #pomodoro-timer {
-      font-size: 26px;
-      font-weight: bold;
-      background: #ffeb3b;
-      color: #000;
-      border-radius: 8px;
-      padding: 6px 12px;
-      display: inline-block;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-      margin-bottom: 8px;
+    #progress-ring {
+      transition: stroke-dashoffset 1s linear, stroke 0.6s ease;
     }
 
     #cycle-count {
@@ -63,7 +41,7 @@
     }
 
     #stop-pomodoro {
-      padding: 4px 6px;
+      padding: 4px 10px;
       background: #f44336;
       color: white;
       border: none;
@@ -81,7 +59,25 @@
 </head>
 
 <body>
-  <div id="pomodoro-timer">50:00</div>
+  <!-- r=46, circumference ≈ 289 -->
+  <svg width="110" height="110" viewBox="0 0 110 110">
+    <!-- Track -->
+    <circle cx="55" cy="55" r="46" fill="none" stroke="#2e2e4a" stroke-width="7"/>
+    <!-- Progress ring, starts at 12 o'clock -->
+    <circle id="progress-ring"
+      cx="55" cy="55" r="46"
+      fill="none" stroke="#ffeb3b" stroke-width="7"
+      stroke-dasharray="289" stroke-dashoffset="0"
+      stroke-linecap="round"
+      transform="rotate(-90 55 55)"/>
+    <!-- Timer digits inside the ring -->
+    <text id="pomodoro-timer"
+      x="55" y="55"
+      text-anchor="middle" dominant-baseline="middle"
+      font-size="22" font-weight="bold" fill="white"
+      font-family="'Courier New', Courier, monospace">50:00</text>
+  </svg>
+
   <div id="cycle-count">Cycle 1</div>
   <button id="stop-pomodoro">Stop</button>
 
