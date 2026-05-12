@@ -32,8 +32,15 @@
     }
 
     @keyframes pulse-glow {
-      0%, 100% { filter: drop-shadow(0 0 4px rgba(255, 80, 80, 0.5)); }
-      50%       { filter: drop-shadow(0 0 14px rgba(255, 80, 80, 1)); }
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 4px rgba(255, 80, 80, 0.5));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 14px rgba(255, 80, 80, 1));
+      }
     }
 
     body.break-mode #progress-ring {
@@ -46,7 +53,7 @@
     }
 
     body.break-mode #cycle-count {
-      color: #ffaaaa;
+      color: #000000;
     }
 
     #stop-pomodoro {
@@ -71,20 +78,13 @@
   <!-- r=46, circumference ≈ 289 -->
   <svg width="110" height="110" viewBox="0 0 110 110">
     <!-- Track -->
-    <circle cx="55" cy="55" r="46" fill="none" stroke="#2e2e4a" stroke-width="7"/>
+    <circle cx="55" cy="55" r="46" fill="none" stroke="#2e2e4a" stroke-width="7" />
     <!-- Progress ring, starts at 12 o'clock -->
-    <circle id="progress-ring"
-      cx="55" cy="55" r="46"
-      fill="none" stroke="#ffeb3b" stroke-width="7"
-      stroke-dasharray="289" stroke-dashoffset="0"
-      stroke-linecap="round"
-      transform="rotate(-90 55 55)"/>
+    <circle id="progress-ring" cx="55" cy="55" r="46" fill="none" stroke="#ffeb3b" stroke-width="7"
+      stroke-dasharray="289" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 55 55)" />
     <!-- Timer digits inside the ring -->
-    <text id="pomodoro-timer"
-      x="55" y="55"
-      text-anchor="middle" dominant-baseline="middle"
-      font-size="22" font-weight="bold" fill="white"
-      font-family="'Courier New', Courier, monospace">50:00</text>
+    <text id="pomodoro-timer" x="55" y="55" text-anchor="middle" dominant-baseline="middle" font-size="22"
+      font-weight="bold" fill="white" font-family="'Courier New', Courier, monospace">50:00</text>
   </svg>
 
   <div id="cycle-count">Cycle 1</div>
