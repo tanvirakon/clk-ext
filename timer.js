@@ -8,7 +8,7 @@ let isPaused = false; // Track if timer is paused
 let appliedWindowHeight;
 
 const CUSTOM_TIMER_WINDOW_HEIGHT = 150;
-const TARGET_TIME_WINDOW_HEIGHT = 110;
+const TARGET_TIME_WINDOW_HEIGHT = 130;
 
 function resizeTimerWindow(isCustomTimer) {
   const height = isCustomTimer

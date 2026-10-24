@@ -177,7 +177,7 @@ setTimerButton.addEventListener("click", () => {
       url: "timer.html",
       type: "popup",
       width: 180,
-      height: 150,
+      height: 170,
       left: screen.width - 250, // Position near right edge
       top: 110, // Position near top
       focused: true,

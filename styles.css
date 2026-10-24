@@ -225,7 +225,7 @@ body::after {
   left: 50%;
   top: -1px;
   transform: translate(-50%, -50%) rotate(-10deg);
-  background: var(--paper);
+  background: #fbf7ef;
   padding: 2px 8px;
   line-height: 0;
 }
@@ -321,7 +321,7 @@ body::after {
   position: fixed;
   right: 8px;
   bottom: 6px;
-  width: 118px;
+  width: 68px;
   height: auto;
   pointer-events: none;
   z-index: 30;
