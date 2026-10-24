@@ -1,6 +1,6 @@
 import { calculateTimeRemaining, formatTime } from "./utils.js";
 
-const notificationSound = new Audio("idiot.mp3");
+const notificationSound = new Audio("../assets/idiot.mp3");
 
 let notificationPlayed = false;
 let timerInterval;

@@ -7,7 +7,7 @@ const ring = document.getElementById("pomodoro-ring");
 const cycleEl = document.getElementById("cycle-count");
 const stopBtn = document.getElementById("stop-pomodoro");
 
-const sound = new Audio("idiot.mp3");
+const sound = new Audio("../assets/idiot.mp3");
 
 let phaseStart = Date.now(); // wall-clock timestamp of when current phase began
 let isBreak = false;

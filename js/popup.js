@@ -207,7 +207,7 @@ setTimerButton.addEventListener("click", () => {
 
     // Create the timer window at right side, top position
     chrome.windows.create({
-      url: "timer.html",
+      url: "pages/timer.html",
       type: "popup",
       width: 180,
       height: 170,
@@ -225,7 +225,7 @@ setTimerButton.addEventListener("click", () => {
 document.getElementById("start-stopwatch").addEventListener("click", () => {
   // Create the stopwatch window at right side, top position
   chrome.windows.create({
-    url: "stopwatch.html",
+    url: "pages/stopwatch.html",
     type: "popup",
     width: 210,
     height: 200,
@@ -240,7 +240,7 @@ document.getElementById("start-stopwatch").addEventListener("click", () => {
 // Pomodoro button — opens the pomodoro floating window
 document.getElementById("start-pomodoro").addEventListener("click", () => {
   chrome.windows.create({
-    url: "pomodoro.html",
+    url: "pages/pomodoro.html",
     type: "popup",
     width: 200,
     height: 380,

@@ -9,7 +9,7 @@ let currentFrame = 0;
 /* ── Load & composite every GIF frame ─────────────────────────── */
 async function loadGifFrames() {
   try {
-    const response = await fetch(chrome.runtime.getURL("jinx.gif"));
+    const response = await fetch(chrome.runtime.getURL("assets/jinx.gif"));
     const buffer = await response.arrayBuffer();
     const gif = decodeGif(buffer);
 
@@ -62,7 +62,7 @@ async function loadGifFrames() {
       }
     }
 
-    console.log(`Loaded ${frameImageData.length} frames from jinx.gif`);
+    console.log(`Loaded ${frameImageData.length} frames from assets/jinx.gif`);
   } catch (error) {
     console.error("Error loading GIF frames:", error);
   }
