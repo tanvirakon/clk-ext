@@ -82,6 +82,27 @@ body::after {
     0 0 0 3px rgba(240, 192, 90, 0.4);
 }
 
+.custom-time-input {
+  cursor: pointer;
+  text-align: center;
+  font-family: "Gaegu", cursive;
+  font-weight: 700;
+  font-size: 21px;
+  letter-spacing: 0.5px;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  user-select: none;
+}
+.custom-time-input:hover {
+  background: #fffcf0;
+  border-color: #2b2623;
+  box-shadow: 2px 3px 0 rgba(74, 63, 53, 0.35);
+}
+.custom-time-input:focus-visible {
+  box-shadow:
+    2px 3px 0 var(--pencil-soft),
+    0 0 0 3px rgba(240, 192, 90, 0.5);
+}
+
 .timer-button {
   padding: 6px 16px;
   background: #fffdf6;
@@ -206,6 +227,10 @@ body::after {
   font-size: 15px;
   padding: 6px 8px;
   box-sizing: border-box;
+}
+.time-diff-inputs .custom-time-input {
+  font-size: 17px;
+  padding: 6px 4px;
 }
 
 .time-separator {
@@ -410,6 +435,284 @@ body.stopwatch-paused .trot-cat .trot-tail {
   50% {
     transform: rotate(6deg);
   }
+}
+
+/* ============================================================
+   Scroll Wheel Time Picker Modal
+   ============================================================ */
+.time-picker-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(35, 33, 44, 0.58);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.time-picker-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.time-picker-modal {
+  background: var(--paper);
+  border: 2px solid var(--pencil);
+  border-radius: 18px 22px 16px 20px / 20px 16px 22px 18px;
+  box-shadow:
+    0 10px 30px rgba(35, 33, 44, 0.4),
+    3px 4px 0 var(--pencil);
+  width: 256px;
+  padding: 14px 12px 12px;
+  box-sizing: border-box;
+  text-align: center;
+  position: relative;
+  transform: scale(0.92) translateY(8px);
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+}
+
+.time-picker-overlay.active .time-picker-modal {
+  transform: scale(1) translateY(0);
+}
+
+.time-picker-modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: var(--paper-noise);
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.time-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+  padding: 0 4px;
+}
+
+.time-picker-title {
+  font-family: "Gaegu", cursive;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ink);
+  letter-spacing: 0.5px;
+}
+
+.time-picker-close {
+  background: none;
+  border: none;
+  font-family: "Gaegu", cursive;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--pencil);
+  padding: 0 4px;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.time-picker-close:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+/* Live Time Preview Pill */
+.time-picker-preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fffdf6;
+  border: 1.5px solid var(--pencil);
+  border-radius: var(--wobble);
+  padding: 2px 14px;
+  margin: 2px auto 8px;
+  font-family: "Gaegu", cursive;
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--terracotta);
+  letter-spacing: 1px;
+  box-shadow: 1.5px 2px 0 var(--pencil-soft);
+  min-width: 110px;
+}
+
+/* Wheel Container */
+.wheel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  background: #fffdf6;
+  border: 1.5px solid var(--pencil);
+  border-radius: 12px;
+  box-shadow: inset 1px 2px 4px rgba(74, 63, 53, 0.12);
+  overflow: hidden;
+  margin: 0 auto 10px;
+}
+
+/* Middle Selection Lens */
+.wheel-lens {
+  position: absolute;
+  top: 40px;
+  left: 6px;
+  right: 6px;
+  height: 40px;
+  background: rgba(240, 192, 90, 0.24);
+  border-top: 1.5px dashed rgba(74, 63, 53, 0.45);
+  border-bottom: 1.5px dashed rgba(74, 63, 53, 0.45);
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Vignette Top & Bottom */
+.wheel-vignette-top,
+.wheel-vignette-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 38px;
+  pointer-events: none;
+  z-index: 3;
+}
+.wheel-vignette-top {
+  top: 0;
+  background: linear-gradient(to bottom, #fffdf6 20%, rgba(255, 253, 246, 0) 100%);
+}
+.wheel-vignette-bottom {
+  bottom: 0;
+  background: linear-gradient(to top, #fffdf6 20%, rgba(255, 253, 246, 0) 100%);
+}
+
+/* Column Styles */
+.wheel-column {
+  height: 120px;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
+  z-index: 1;
+  cursor: grab;
+  touch-action: pan-y;
+  outline: none;
+}
+.wheel-column:active {
+  cursor: grabbing;
+}
+.wheel-column:focus-visible {
+  outline: 2px dashed rgba(240, 192, 90, 0.8);
+  outline-offset: -2px;
+  border-radius: 6px;
+}
+.wheel-column::-webkit-scrollbar {
+  display: none;
+}
+
+.wheel-column.hour-col {
+  width: 58px;
+}
+.wheel-column.minute-col {
+  width: 58px;
+}
+.wheel-column.period-col {
+  width: 54px;
+}
+
+.wheel-colon {
+  font-family: "Gaegu", cursive;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--pencil);
+  width: 12px;
+  text-align: center;
+  user-select: none;
+  z-index: 2;
+  margin-top: -2px;
+}
+
+.wheel-spacer {
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.wheel-item {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-family: "Gaegu", cursive;
+  font-size: 22px;
+  font-weight: 700;
+  color: #7d7065;
+  scroll-snap-align: center;
+  user-select: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.12s ease, color 0.12s ease;
+  transform: scale(0.85);
+  opacity: 0.45;
+}
+
+.wheel-item.selected {
+  transform: scale(1.15);
+  opacity: 1;
+  color: #2b2623;
+}
+
+/* Footer Action Buttons */
+.time-picker-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.time-picker-btn {
+  font-family: "Patrick Hand", "Comic Sans MS", cursive;
+  font-size: 15px;
+  padding: 6px 18px;
+  border: 1.5px solid var(--pencil);
+  border-radius: var(--wobble);
+  cursor: pointer;
+  box-shadow: 1.5px 2px 0 var(--pencil-soft);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+  outline: none;
+}
+.time-picker-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 3px 0 var(--pencil-soft);
+}
+.time-picker-btn:active {
+  transform: translate(1px, 2px);
+  box-shadow: 0 1px 0 var(--pencil-soft);
+}
+
+.time-picker-btn.btn-cancel {
+  background: #fffdf6;
+  color: var(--ink);
+}
+.time-picker-btn.btn-cancel:hover {
+  background: #fbeae5;
+  color: var(--terracotta-deep);
+}
+
+.time-picker-btn.btn-set {
+  background: var(--sage);
+  color: var(--paper);
+  font-weight: 700;
+  padding: 6px 24px;
+}
+.time-picker-btn.btn-set:hover {
+  background: var(--sage-deep);
 }
 
 /* --- respect users who prefer stillness --- */

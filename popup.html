@@ -97,10 +97,12 @@
       </svg>
 
       <input
-        type="time"
+        type="text"
         id="target-time"
-        class="time-input"
+        class="time-input custom-time-input"
+        readonly
         placeholder="Select time"
+        autocomplete="off"
       />
       <input
         type="number"
@@ -119,13 +121,22 @@
     <div class="time-diff-container">
       <div class="time-diff-inputs">
         <input
-          type="time"
+          type="text"
           id="from-time"
-          class="time-input"
+          class="time-input custom-time-input"
+          readonly
           placeholder="From"
+          autocomplete="off"
         />
         <span class="time-separator">to</span>
-        <input type="time" id="to-time" class="time-input" placeholder="To" />
+        <input
+          type="text"
+          id="to-time"
+          class="time-input custom-time-input"
+          readonly
+          placeholder="To"
+          autocomplete="off"
+        />
       </div>
       <div id="time-difference" class="countdown"></div>
     </div>

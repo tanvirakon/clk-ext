@@ -1,4 +1,5 @@
 import { calculateTimeRemaining, formatTime } from "./utils.js";
+import { initTimePicker } from "./time-picker.js";
 
 const targetTimeInput = document.getElementById("target-time");
 const customTimeInput = document.getElementById("custom-time");
@@ -11,6 +12,38 @@ const fromTimeInput = document.getElementById("from-time");
 const toTimeInput = document.getElementById("to-time");
 const calculateDiffButton = document.getElementById("calculate-diff");
 const timeDifferenceElement = document.getElementById("time-difference");
+
+// Initialize tactile scroll wheel time pickers
+initTimePicker(targetTimeInput, { title: "Target Time" });
+initTimePicker(fromTimeInput, { title: "From Time" });
+initTimePicker(toTimeInput, { title: "To Time" });
+
+// Safe mock shim for testing in regular browser tab without extension host
+if (typeof window.chrome === "undefined" || !window.chrome.storage) {
+  window.chrome = window.chrome || {};
+  const mockStore = {};
+  window.chrome.storage = {
+    local: {
+      get: (keys, cb) => {
+        const res = {};
+        const keyArr = Array.isArray(keys) ? keys : typeof keys === "string" ? [keys] : Object.keys(keys || {});
+        keyArr.forEach((k) => { res[k] = mockStore[k]; });
+        if (cb) cb(res);
+      },
+      set: (obj, cb) => {
+        Object.assign(mockStore, obj);
+        if (cb) cb();
+      },
+      remove: (keys, cb) => {
+        const keyArr = Array.isArray(keys) ? keys : [keys];
+        keyArr.forEach((k) => delete mockStore[k]);
+        if (cb) cb();
+      },
+    },
+  };
+  window.chrome.windows = window.chrome.windows || { create: () => {} };
+  window.chrome.tabs = window.chrome.tabs || { query: (q, cb) => cb && cb([]) };
+}
 
 // Set default value for fromTimeInput to current time
 function setCurrentTimeAsDefault() {
