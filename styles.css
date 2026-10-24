@@ -397,6 +397,11 @@ body::after {
   transform-origin: 88% 92%;
   animation: tail-flick 0.55s ease-in-out infinite;
 }
+body.stopwatch-paused .trot-cat .leg,
+body.stopwatch-paused .trot-cat .trot-body,
+body.stopwatch-paused .trot-cat .trot-tail {
+  animation-play-state: paused;
+}
 @keyframes tail-flick {
   0%,
   100% {

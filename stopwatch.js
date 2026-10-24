@@ -9,6 +9,10 @@ const pauseButton = document.getElementById("pause-stopwatch");
 const newButton = document.getElementById("new-stopwatch");
 const finalTimeDisplay = document.getElementById("final-time");
 
+function setCatMotion(isRunning) {
+  document.body.classList.toggle("stopwatch-paused", !isRunning);
+}
+
 // Load saved state if it exists
 chrome.storage.local.get(
   ["stopwatchRunning", "stopwatchStartTime", "stopwatchElapsed"],
@@ -21,6 +25,7 @@ chrome.storage.local.get(
       pauseButton.textContent = "Pause";
     } else if (result.stopwatchElapsed) {
       elapsedTime = result.stopwatchElapsed;
+      setCatMotion(false);
       updateDisplay();
     }
   }
@@ -30,6 +35,7 @@ function startStopwatch() {
   if (!running) {
     startTime = Date.now() - elapsedTime;
     running = true;
+    setCatMotion(true);
     chrome.storage.local.set({
       stopwatchRunning: true,
       stopwatchStartTime: startTime,
@@ -43,6 +49,7 @@ function startStopwatch() {
 function pauseStopwatch() {
   clearInterval(stopwatchInterval);
   running = false;
+  setCatMotion(false);
   elapsedTime = Date.now() - startTime;
   chrome.storage.local.set({
     stopwatchRunning: false,
@@ -95,17 +102,13 @@ pauseButton.addEventListener("click", () => {
   if (running) {
     pauseStopwatch();
     pauseButton.textContent = "Start";
-    // Show new button, arrange flex
-    newButton.style.display = "inline-block";
   } else {
     startStopwatch();
     pauseButton.textContent = "Pause";
-    // Hide new button when resuming
-    newButton.style.display = "none";
   }
 });
 
-// New button resets and starts stopwatch, hides itself
+// New button resets and starts stopwatch
 newButton.addEventListener("click", () => {
   clearInterval(stopwatchInterval);
   running = false;
@@ -113,7 +116,6 @@ newButton.addEventListener("click", () => {
   startStopwatch();
   updateDisplay();
   pauseButton.textContent = "Pause";
-  newButton.style.display = "none";
 });
 
 // endButton.addEventListener("click", endStopwatch);
