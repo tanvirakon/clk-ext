@@ -1,9 +1,9 @@
-const WORK_MS = 90 * 60 * 1000; // 90 minutes in ms
+const WORK_MS = 2 * 60 * 1000; // 90 minutes in ms
 const BREAK_MS = 20 * 60 * 1000; // 20 minutes in ms
-const CIRCUMFERENCE = 2 * Math.PI * 46; // ≈ 289
+const CIRCUMFERENCE = 2 * Math.PI * 90;
 
 const timerEl = document.getElementById("pomodoro-timer");
-const ring = document.getElementById("progress-ring");
+const ring = document.getElementById("pomodoro-ring");
 const cycleEl = document.getElementById("cycle-count");
 const stopBtn = document.getElementById("stop-pomodoro");
 

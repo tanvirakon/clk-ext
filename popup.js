@@ -209,9 +209,9 @@ document.getElementById("start-pomodoro").addEventListener("click", () => {
   chrome.windows.create({
     url: "pomodoro.html",
     type: "popup",
-    width: 340,
-    height: 410,
-    left: screen.width - 340,
+    width: 200,
+    height: 380,
+    left: screen.width - 100,
     top: 110,
   });
 

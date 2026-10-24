@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>Pomodoro Timer</title>
@@ -30,14 +30,14 @@
           2px 3px 0 rgba(0, 0, 0, 0.3);
       }
       .pomodoro-container {
-        padding: 18px 10px 8px;
+        padding: 8px 4px 8px;
         position: relative;
       }
       h2 {
         font-family: "Gaegu", cursive;
         font-weight: 700;
         font-size: 26px;
-        margin: 4px 0 12px;
+        margin: 0 0 0;
         color: var(--gold);
       }
       /* inputs & buttons on dark ink */
@@ -64,14 +64,6 @@
       .timer-button:hover {
         background: #38344a;
       }
-      #start-pomodoro {
-        background: var(--plum);
-        color: var(--paper);
-        border-color: var(--pencil);
-      }
-      #start-pomodoro:hover {
-        background: var(--plum-deep);
-      }
       #stop-pomodoro {
         background: var(--terracotta);
         color: var(--paper);
@@ -84,9 +76,9 @@
       /* --- glowing hand-drawn golden ring --- */
       .ring-wrap {
         position: relative;
-        width: 190px;
+        width: 150px;
         height: 190px;
-        margin: 14px auto 6px;
+        margin: 5px auto 2px;
       }
       .ring-wrap svg.ring {
         width: 100%;
@@ -96,7 +88,7 @@
       }
       .ring-track {
         fill: none;
-        stroke: rgba(240, 192, 90, 0.18);
+        stroke: transparent;
         stroke-width: 14;
         stroke-linecap: round;
         stroke-dasharray: 3 14;
@@ -106,13 +98,13 @@
         stroke: var(--gold);
         stroke-width: 14;
         stroke-linecap: round;
-        filter: drop-shadow(0 0 8px rgba(240, 192, 90, 0.55))
-          drop-shadow(0 0 18px rgba(240, 192, 90, 0.3));
+        stroke-dasharray: 565.49;
+        stroke-dashoffset: 0;
         transition: stroke-dashoffset 0.3s linear;
       }
       .ring-dashes {
         fill: none;
-        stroke: rgba(74, 63, 53, 0.5);
+        stroke: transparent;
         stroke-width: 1.5;
         stroke-dasharray: 4 9;
         opacity: 0.9;
@@ -132,8 +124,8 @@
       }
       #cycle-count {
         font-family: "Gaegu", cursive;
-        font-size: 20px;
-        margin: 2px 0 12px;
+        font-size: 15px;
+        margin: 0 0 4px;
         color: #efe8da;
       }
       .pomodoro-controls {
@@ -147,7 +139,7 @@
       .ring-cat {
         position: absolute;
         top: -30px;
-        right: -4px;
+        right: 1px;
         width: 64px;
         pointer-events: none;
       }
@@ -176,12 +168,6 @@
   <body>
     <div class="pomodoro-container">
       <h2>Pomodoro</h2>
-      <input
-        type="number"
-        id="pomodoro-duration"
-        class="time-input"
-        placeholder="Minutes"
-      />
       <div class="ring-wrap">
         <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
           <circle class="ring-track" cx="100" cy="100" r="90" />
@@ -190,7 +176,8 @@
             id="pomodoro-ring"
             cx="100"
             cy="100"
-            r="90" />
+            r="90"
+          />
           <circle class="ring-dashes" cx="100" cy="100" r="90" />
         </svg>
         <div id="pomodoro-timer">25:00</div>
@@ -203,18 +190,32 @@
               fill="none"
               stroke="#0e0d12"
               stroke-width="11"
-              stroke-linecap="round" />
+              stroke-linecap="round"
+            />
             <path
               d="M66 56 C 82 54, 86 36, 72 27"
               fill="none"
               stroke="#2c2937"
               stroke-width="7"
               stroke-linecap="round"
-              stroke-dasharray="2 9" />
+              stroke-dasharray="2 9"
+            />
           </g>
           <!-- ears -->
-          <path d="M16 24 L12 6 L30 14 Z" fill="#141219" stroke="#efe8da" stroke-width="2" stroke-linejoin="round" />
-          <path d="M50 14 L58 4 L60 22 Z" fill="#141219" stroke="#efe8da" stroke-width="2" stroke-linejoin="round" />
+          <path
+            d="M16 24 L12 6 L30 14 Z"
+            fill="#141219"
+            stroke="#efe8da"
+            stroke-width="2"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M50 14 L58 4 L60 22 Z"
+            fill="#141219"
+            stroke="#efe8da"
+            stroke-width="2"
+            stroke-linejoin="round"
+          />
           <path d="M19 19 L17 11 L26 15 Z" fill="#e88a7a" />
           <path d="M54 15 L56 9 L58 18 Z" fill="#e88a7a" />
           <!-- body -->
@@ -222,7 +223,8 @@
             d="M14 60 L14 36 Q14 16 37 16 Q60 16 60 36 L60 60 Z"
             fill="#141219"
             stroke="#efe8da"
-            stroke-width="2" />
+            stroke-width="2"
+          />
           <!-- eyes (blinking) -->
           <g class="blink" fill="#f0c05a">
             <ellipse cx="29" cy="36" rx="3.4" ry="4.6" />
@@ -237,7 +239,8 @@
             d="M12 42 L2 39 M12 47 L2 50 M62 42 L72 39 M62 47 L72 50"
             stroke="#efe8da"
             stroke-width="1.2"
-            stroke-linecap="round" />
+            stroke-linecap="round"
+          />
           <!-- paws gripping the ring -->
           <g fill="#141219" stroke="#efe8da" stroke-width="1.8">
             <ellipse cx="26" cy="60" rx="8" ry="6" />
@@ -247,7 +250,6 @@
       </div>
       <div id="cycle-count">Cycles: 0</div>
       <div class="pomodoro-controls">
-        <button id="start-pomodoro" class="timer-button">Start</button>
         <button id="stop-pomodoro" class="timer-button">Stop</button>
       </div>
     </div>
