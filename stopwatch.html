@@ -1,24 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
     <title>Stopwatch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Patrick+Hand&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* --- Stopwatch golden craft page --- */
+      html,
+      body {
+        background: var(--honey);
+        margin: 0;
+        width: 100%;
+        padding: 1px 1px;
+        overflow: hidden;
+      }
+      body::before {
+        /* golden-tinted grain */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+      }
+      body::after {
+        box-shadow:
+          0 0 0 2px rgba(122, 72, 28, 0.18),
+          inset 0 0 18px rgba(122, 72, 28, 0.12),
+          2px 3px 0 rgba(122, 72, 28, 0.18);
+      }
+
+      /* cream timer box */
+      .stopwatch-display {
+        background: var(--paper);
+        border: 2px solid var(--pencil);
+        border-radius: var(--wobble);
+        box-shadow: 2px 3px 0 rgba(74, 63, 53, 0.3);
+        padding: 3px 2px;
+        max-width: 220px;
+        margin: 3px auto 5px;
+      }
+      #stopwatch {
+        font-family: "Gaegu", cursive;
+        font-weight: 700;
+        font-size: 36px;
+        color: var(--ink);
+        line-height: 1;
+        margin: 2px 0 0;
+      }
+      #final-time {
+        font-family: "Gaegu", cursive;
+        font-weight: 400;
+        font-size: 15px;
+        color: #8a6d3b;
+        margin: 4px 0 0;
+        min-height: 14px;
+      }
+
+      #new-stopwatch {
+        background: #fffdf6;
+        color: var(--ink);
+      }
+      #new-stopwatch:hover {
+        background: #f3ead6;
+      }
+
+      /* --- trotting tabby above the display --- */
+      .trot-cat {
+        width: 90px;
+        margin-bottom: 0;
+      }
+    </style>
   </head>
-  <body class="stopwatch-body">
-    <div class="stopwatch-display">
-      <div id="stopwatch" class="time">00:00:00</div>
-    </div>
-
-    <div class="stopwatch-controls" id="stopwatch-controls">
+  <body>
+    <div class="stopwatch-controls">
+      <button id="start-stopwatch" class="timer-button">Start</button>
       <button id="pause-stopwatch" class="timer-button">Pause</button>
-      <button id="new-stopwatch" class="timer-button" style="display: none">
-        New
-      </button>
+      <button id="new-stopwatch" class="timer-button">Reset</button>
     </div>
 
-    <div id="final-time" class="countdown"></div>
-
+    <div class="stopwatch-display">
+      <!-- trotting tabby above the stopwatch display -->
+      <svg class="trot-cat" viewBox="0 0 140 84" aria-hidden="true">
+        <!-- back legs -->
+        <g class="leg b1">
+          <rect x="92" y="56" width="9" height="26" rx="4.5" fill="#e8a04c" stroke="#4a3f35" stroke-width="2" />
+          <path d="M92 80 q5 4 9 0" fill="none" stroke="#4a3f35" stroke-width="2" stroke-linecap="round" />
+        </g>
+        <g class="leg b2">
+          <rect x="106" y="56" width="9" height="26" rx="4.5" fill="#f0b263" stroke="#4a3f35" stroke-width="2" />
+          <path d="M106 80 q5 4 9 0" fill="none" stroke="#4a3f35" stroke-width="2" stroke-linecap="round" />
+        </g>
+        <!-- front legs -->
+        <g class="leg f1">
+          <rect x="40" y="56" width="9" height="26" rx="4.5" fill="#f0b263" stroke="#4a3f35" stroke-width="2" />
+          <path d="M40 80 q5 4 9 0" fill="none" stroke="#4a3f35" stroke-width="2" stroke-linecap="round" />
+        </g>
+        <g class="leg f2">
+          <rect x="56" y="56" width="9" height="26" rx="4.5" fill="#e8a04c" stroke="#4a3f35" stroke-width="2" />
+          <path d="M56 80 q5 4 9 0" fill="none" stroke="#4a3f35" stroke-width="2" stroke-linecap="round" />
+        </g>
+        <!-- tail -->
+        <g class="trot-tail">
+          <path
+            d="M124 40 C 138 34, 140 16, 126 10"
+            fill="none"
+            stroke="#4a3f35"
+            stroke-width="12"
+            stroke-linecap="round" />
+          <path
+            d="M124 40 C 138 34, 140 16, 126 10"
+            fill="none"
+            stroke="#e8a04c"
+            stroke-width="8.5"
+            stroke-linecap="round" />
+          <path
+            d="M124 40 C 138 34, 140 16, 126 10"
+            fill="none"
+            stroke="#c97e2e"
+            stroke-width="8.5"
+            stroke-linecap="round"
+            stroke-dasharray="3 10" />
+        </g>
+        <!-- body -->
+        <g class="trot-body">
+          <ellipse cx="84" cy="44" rx="42" ry="24" fill="#e8a04c" stroke="#4a3f35" stroke-width="2.5" />
+          <!-- tabby patches -->
+          <path
+            d="M60 24 q10 8 6 20 M78 21 q10 9 6 23 M96 24 q10 8 6 20"
+            fill="none"
+            stroke="#c97e2e"
+            stroke-width="4"
+            stroke-linecap="round" />
+          <!-- head -->
+          <circle cx="36" cy="34" r="21" fill="#e8a04c" stroke="#4a3f35" stroke-width="2.5" />
+          <!-- ears -->
+          <path d="M20 20 L14 3 L34 12 Z" fill="#e8a04c" stroke="#4a3f35" stroke-width="2.5" stroke-linejoin="round" />
+          <path d="M46 12 L56 2 L58 20 Z" fill="#e8a04c" stroke="#4a3f35" stroke-width="2.5" stroke-linejoin="round" />
+          <path d="M23 15 L20 8 L29 12 Z" fill="#e8956f" />
+          <path d="M50 12 L53 6 L55 15 Z" fill="#e8956f" />
+          <!-- stripes on head -->
+          <path d="M32 14 q2 6 0 11 M42 13 q2 7 0 12" fill="none" stroke="#c97e2e" stroke-width="3" stroke-linecap="round" />
+          <!-- focused eyes -->
+          <circle cx="29" cy="34" r="2.6" fill="#4a3f35" />
+          <circle cx="44" cy="34" r="2.6" fill="#4a3f35" />
+          <circle cx="29.9" cy="33.1" r="0.8" fill="#fffdf6" />
+          <circle cx="44.9" cy="33.1" r="0.8" fill="#fffdf6" />
+          <!-- nose & mouth -->
+          <path d="M33.5 40 h5 l-2.5 3.5 Z" fill="#e88a7a" stroke="#4a3f35" stroke-width="1.3" stroke-linejoin="round" />
+          <path
+            d="M36 44 q-1 3 -4 3.5 M36 44 q1 3 4 3.5"
+            fill="none"
+            stroke="#4a3f35"
+            stroke-width="1.5"
+            stroke-linecap="round" />
+          <!-- whiskers -->
+          <path
+            d="M17 38 L7 35 M17 43 L7 46 M55 38 L65 35 M55 43 L65 46"
+            stroke="#4a3f35"
+            stroke-width="1.3"
+            stroke-linecap="round" />
+        </g>
+        <!-- motion dashes -->
+        <g stroke="#b3793a" stroke-width="2.4" stroke-linecap="round" opacity="0.55">
+          <path d="M6 62 h10 M2 72 h8 M10 82 h8" />
+        </g>
+      </svg>
+      <p id="stopwatch">00:00:00</p>
+      <p id="final-time"></p>
+    </div>
     <script type="module" src="stopwatch.js"></script>
   </body>
 </html>

@@ -176,9 +176,9 @@ setTimerButton.addEventListener("click", () => {
     chrome.windows.create({
       url: "timer.html",
       type: "popup",
-      width: 200,
-      height: 135,
-      left: screen.width - 190, // Position near right edge
+      width: 180,
+      height: 150,
+      left: screen.width - 250, // Position near right edge
       top: 110, // Position near top
       focused: true,
     });
@@ -194,9 +194,9 @@ document.getElementById("start-stopwatch").addEventListener("click", () => {
   chrome.windows.create({
     url: "stopwatch.html",
     type: "popup",
-    width: 236,
-    height: 171,
-    left: screen.width - 300, // Position near right edge
+    width: 210,
+    height: 200,
+    left: screen.width - 200, // Position near right edge
     top: 110, // Position near top
   });
 
@@ -209,9 +209,9 @@ document.getElementById("start-pomodoro").addEventListener("click", () => {
   chrome.windows.create({
     url: "pomodoro.html",
     type: "popup",
-    width: 236,
-    height: 171,
-    left: screen.width - 300,
+    width: 340,
+    height: 410,
+    left: screen.width - 340,
     top: 110,
   });
 

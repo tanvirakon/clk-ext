@@ -1,18 +1,18 @@
-const WORK_MS   = 50 * 60 * 1000;  // 50 minutes in ms
-const BREAK_MS  = 10 * 60 * 1000;  // 10 minutes in ms
+const WORK_MS = 90 * 60 * 1000; // 90 minutes in ms
+const BREAK_MS = 20 * 60 * 1000; // 20 minutes in ms
 const CIRCUMFERENCE = 2 * Math.PI * 46; // ≈ 289
 
 const timerEl = document.getElementById("pomodoro-timer");
-const ring    = document.getElementById("progress-ring");
+const ring = document.getElementById("progress-ring");
 const cycleEl = document.getElementById("cycle-count");
 const stopBtn = document.getElementById("stop-pomodoro");
 
 const sound = new Audio("idiot.mp3");
 
 let phaseStart = Date.now(); // wall-clock timestamp of when current phase began
-let isBreak    = false;
+let isBreak = false;
 let cycleCount = 1;
-let interval   = null;
+let interval = null;
 
 function phaseDuration() {
   return isBreak ? BREAK_MS : WORK_MS;
@@ -25,7 +25,9 @@ function secondsLeft() {
 }
 
 function formatTime(secs) {
-  const m = Math.floor(secs / 60).toString().padStart(2, "0");
+  const m = Math.floor(secs / 60)
+    .toString()
+    .padStart(2, "0");
   const s = (secs % 60).toString().padStart(2, "0");
   return `${m}:${s}`;
 }
@@ -37,9 +39,9 @@ function updateDisplay() {
 
   // Ring progress
   const totalSecs = phaseDuration() / 1000;
-  const progress  = secs / totalSecs; // 1.0 = full, 0.0 = empty
+  const progress = secs / totalSecs; // 1.0 = full, 0.0 = empty
   ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - progress);
-  ring.style.stroke = isBreak ? "#ff6b6b" : "#ffeb3b";
+  ring.style.stroke = isBreak ? "#ff8a6b" : "#f0c05a";
 
   if (isBreak) {
     document.body.classList.add("break-mode");

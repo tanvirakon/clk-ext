@@ -1,96 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <title>Pomodoro</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 8px;
-      background: #1a1a2e;
-      color: white;
-      font-family: "Comic Sans MS", cursive, sans-serif;
-      text-align: center;
-      user-select: none;
-      transition: background 0.6s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      height: 100vh;
-      box-sizing: border-box;
-    }
-
-    body.break-mode {
-      background: rgba(180, 30, 30, 0.95);
-    }
-
-    #progress-ring {
-      transition: stroke-dashoffset 1s linear, stroke 0.6s ease;
-    }
-
-    @keyframes pulse-glow {
-
-      0%,
-      100% {
-        filter: drop-shadow(0 0 4px rgba(255, 80, 80, 0.5));
+  <head>
+    <title>Pomodoro Timer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Patrick+Hand&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* --- Pomodoro night page --- */
+      html,
+      body {
+        background: var(--espresso);
+        color: #efe8da;
+        margin: 0;
+        width: 100%;
+        overflow: hidden;
+      }
+      body::before {
+        /* warm paper grain tinted for the dark page */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
+      }
+      body::after {
+        box-shadow:
+          0 0 0 2px rgba(240, 192, 90, 0.14),
+          inset 0 0 22px rgba(0, 0, 0, 0.35),
+          2px 3px 0 rgba(0, 0, 0, 0.3);
+      }
+      .pomodoro-container {
+        padding: 18px 10px 8px;
+        position: relative;
+      }
+      h2 {
+        font-family: "Gaegu", cursive;
+        font-weight: 700;
+        font-size: 26px;
+        margin: 4px 0 12px;
+        color: var(--gold);
+      }
+      /* inputs & buttons on dark ink */
+      .time-input {
+        background: #2c2937;
+        color: #efe8da;
+        border-color: #efe8da;
+        box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.4);
+      }
+      .time-input:focus {
+        box-shadow:
+          2px 3px 0 rgba(0, 0, 0, 0.4),
+          0 0 0 3px rgba(240, 192, 90, 0.4);
+      }
+      .time-input::placeholder {
+        color: rgba(239, 232, 218, 0.55);
+      }
+      .timer-button {
+        background: #2c2937;
+        color: #efe8da;
+        border-color: #efe8da;
+        box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.4);
+      }
+      .timer-button:hover {
+        background: #38344a;
+      }
+      #start-pomodoro {
+        background: var(--plum);
+        color: var(--paper);
+        border-color: var(--pencil);
+      }
+      #start-pomodoro:hover {
+        background: var(--plum-deep);
+      }
+      #stop-pomodoro {
+        background: var(--terracotta);
+        color: var(--paper);
+        border-color: var(--pencil);
+      }
+      #stop-pomodoro:hover {
+        background: var(--terracotta-deep);
       }
 
-      50% {
-        filter: drop-shadow(0 0 14px rgba(255, 80, 80, 1));
+      /* --- glowing hand-drawn golden ring --- */
+      .ring-wrap {
+        position: relative;
+        width: 190px;
+        height: 190px;
+        margin: 14px auto 6px;
       }
-    }
+      .ring-wrap svg.ring {
+        width: 100%;
+        height: 100%;
+        display: block;
+        transform: rotate(-90deg);
+      }
+      .ring-track {
+        fill: none;
+        stroke: rgba(240, 192, 90, 0.18);
+        stroke-width: 14;
+        stroke-linecap: round;
+        stroke-dasharray: 3 14;
+      }
+      .ring-progress {
+        fill: none;
+        stroke: var(--gold);
+        stroke-width: 14;
+        stroke-linecap: round;
+        filter: drop-shadow(0 0 8px rgba(240, 192, 90, 0.55))
+          drop-shadow(0 0 18px rgba(240, 192, 90, 0.3));
+        transition: stroke-dashoffset 0.3s linear;
+      }
+      .ring-dashes {
+        fill: none;
+        stroke: rgba(74, 63, 53, 0.5);
+        stroke-width: 1.5;
+        stroke-dasharray: 4 9;
+        opacity: 0.9;
+      }
 
-    body.break-mode #progress-ring {
-      animation: pulse-glow 2s ease-in-out infinite;
-    }
+      #pomodoro-timer {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Gaegu", cursive;
+        font-weight: 700;
+        font-size: 44px;
+        color: var(--gold);
+        text-shadow: 0 0 14px rgba(240, 192, 90, 0.45);
+      }
+      #cycle-count {
+        font-family: "Gaegu", cursive;
+        font-size: 20px;
+        margin: 2px 0 12px;
+        color: #efe8da;
+      }
+      .pomodoro-controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
 
-    #cycle-count {
-      font-size: 11px;
-      color: #aaa;
-    }
-
-    body.break-mode #cycle-count {
-      color: #000000;
-    }
-
-    #stop-pomodoro {
-      padding: 4px 10px;
-      background: #f44336;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 13px;
-      font-family: "Comic Sans MS", cursive, sans-serif;
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
-    }
-
-    #stop-pomodoro:hover {
-      background: #c62828;
-    }
-  </style>
-</head>
-
-<body>
-  <!-- r=46, circumference ≈ 289 -->
-  <svg width="110" height="110" viewBox="0 0 110 110">
-    <!-- Track -->
-    <circle cx="55" cy="55" r="46" fill="none" stroke="#2e2e4a" stroke-width="7" />
-    <!-- Progress ring, starts at 12 o'clock -->
-    <circle id="progress-ring" cx="55" cy="55" r="46" fill="none" stroke="#ffeb3b" stroke-width="7"
-      stroke-dasharray="289" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 55 55)" />
-    <!-- Timer digits inside the ring -->
-    <text id="pomodoro-timer" x="55" y="55" text-anchor="middle" dominant-baseline="middle" font-size="22"
-      font-weight="bold" fill="white" font-family="'Courier New', Courier, monospace">50:00</text>
-  </svg>
-
-  <div id="cycle-count">Cycle 1</div>
-  <button id="stop-pomodoro">Stop</button>
-
-  <script type="module" src="pomodoro.js"></script>
-</body>
-
+      /* --- tiny black cat perched on the ring --- */
+      .ring-cat {
+        position: absolute;
+        top: -30px;
+        right: -4px;
+        width: 64px;
+        pointer-events: none;
+      }
+      .ring-cat .ring-tail {
+        transform-box: fill-box;
+        transform-origin: 8% 90%;
+        animation: tail-wag 2.8s ease-in-out infinite;
+      }
+      .ring-cat .blink {
+        animation: cat-blink 4.5s ease-in-out infinite;
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+      @keyframes cat-blink {
+        0%,
+        92%,
+        100% {
+          transform: scaleY(1);
+        }
+        95% {
+          transform: scaleY(0.12);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="pomodoro-container">
+      <h2>Pomodoro</h2>
+      <input
+        type="number"
+        id="pomodoro-duration"
+        class="time-input"
+        placeholder="Minutes"
+      />
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="ring-track" cx="100" cy="100" r="90" />
+          <circle
+            class="ring-progress"
+            id="pomodoro-ring"
+            cx="100"
+            cy="100"
+            r="90" />
+          <circle class="ring-dashes" cx="100" cy="100" r="90" />
+        </svg>
+        <div id="pomodoro-timer">25:00</div>
+        <!-- tiny black cat perched on the ring -->
+        <svg class="ring-cat" viewBox="0 0 90 70" aria-hidden="true">
+          <!-- tail -->
+          <g class="ring-tail">
+            <path
+              d="M66 56 C 82 54, 86 36, 72 27"
+              fill="none"
+              stroke="#0e0d12"
+              stroke-width="11"
+              stroke-linecap="round" />
+            <path
+              d="M66 56 C 82 54, 86 36, 72 27"
+              fill="none"
+              stroke="#2c2937"
+              stroke-width="7"
+              stroke-linecap="round"
+              stroke-dasharray="2 9" />
+          </g>
+          <!-- ears -->
+          <path d="M16 24 L12 6 L30 14 Z" fill="#141219" stroke="#efe8da" stroke-width="2" stroke-linejoin="round" />
+          <path d="M50 14 L58 4 L60 22 Z" fill="#141219" stroke="#efe8da" stroke-width="2" stroke-linejoin="round" />
+          <path d="M19 19 L17 11 L26 15 Z" fill="#e88a7a" />
+          <path d="M54 15 L56 9 L58 18 Z" fill="#e88a7a" />
+          <!-- body -->
+          <path
+            d="M14 60 L14 36 Q14 16 37 16 Q60 16 60 36 L60 60 Z"
+            fill="#141219"
+            stroke="#efe8da"
+            stroke-width="2" />
+          <!-- eyes (blinking) -->
+          <g class="blink" fill="#f0c05a">
+            <ellipse cx="29" cy="36" rx="3.4" ry="4.6" />
+            <ellipse cx="45" cy="36" rx="3.4" ry="4.6" />
+            <circle cx="30.2" cy="34.6" r="1.1" fill="#141219" />
+            <circle cx="46.2" cy="34.6" r="1.1" fill="#141219" />
+          </g>
+          <!-- nose -->
+          <path d="M34.5 45 h5 l-2.5 3.5 Z" fill="#e88a7a" />
+          <!-- whiskers -->
+          <path
+            d="M12 42 L2 39 M12 47 L2 50 M62 42 L72 39 M62 47 L72 50"
+            stroke="#efe8da"
+            stroke-width="1.2"
+            stroke-linecap="round" />
+          <!-- paws gripping the ring -->
+          <g fill="#141219" stroke="#efe8da" stroke-width="1.8">
+            <ellipse cx="26" cy="60" rx="8" ry="6" />
+            <ellipse cx="48" cy="60" rx="8" ry="6" />
+          </g>
+        </svg>
+      </div>
+      <div id="cycle-count">Cycles: 0</div>
+      <div class="pomodoro-controls">
+        <button id="start-pomodoro" class="timer-button">Start</button>
+        <button id="stop-pomodoro" class="timer-button">Stop</button>
+      </div>
+    </div>
+    <script type="module" src="pomodoro.js"></script>
+  </body>
 </html>

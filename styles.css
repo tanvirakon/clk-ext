@@ -1,165 +1,419 @@
+/* ============================================================
+   Cozy Hand-Drawn Sketchbook & Cat theme
+   Craft paper, pencil borders, wobbly edges, tiny cats.
+   ============================================================ */
+@import url("https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Patrick+Hand&display=swap");
+
+:root {
+  --paper: #fbf7ef;
+  --ink: #3d342e;
+  --pencil: #4a3f35;
+  --pencil-soft: rgba(74, 63, 53, 0.25);
+  --sage: #7d9b76;
+  --sage-deep: #6a8663;
+  --terracotta: #d9725b;
+  --terracotta-deep: #c25f49;
+  --ochre: #d99b43;
+  --ochre-deep: #c4883a;
+  --plum: #8c6583;
+  --plum-deep: #785571;
+  --sky: #7aaed6;
+  --sky-deep: #679ec7;
+  --gold: #f0c05a;
+  --honey: #dfb05b;
+  --espresso: #23212c;
+  --wobble: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  --paper-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+}
+
+/* ---------- craft-paper page with deckled frame ---------- */
 body {
   text-align: center;
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-family: "Patrick Hand", "Comic Sans MS", cursive;
   padding: 20px;
-  min-width: 200px;
-  color: #ffffff;
+  width: 300px;
+  box-sizing: border-box;
+  background: var(--paper);
+  color: var(--ink);
+  position: relative;
 }
 
-#clock {
-  font-size: 32px;
-  font-weight: bold;
-  margin: 15px 0;
-  color: #ff4500; /* Naruto's headband color */
-  text-shadow: 2px 2px #000000;
+/* Subtle paper grain over everything */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: var(--paper-noise);
+  pointer-events: none;
+  z-index: 40;
 }
 
-.time {
-  padding: 10px;
-  background: #ffeb3b;
-  border-radius: 10px;
-  display: inline-block;
-  font-size: 20px;
-  color: #000000;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+/* Outer deckled paper frame (box-shadow edge) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 6px;
+  border-radius: 18px 22px 16px 24px / 22px 16px 24px 18px;
+  box-shadow:
+    0 0 0 2px rgba(74, 63, 53, 0.12),
+    inset 0 0 16px rgba(74, 63, 53, 0.08),
+    2px 3px 0 rgba(74, 63, 53, 0.12);
+  pointer-events: none;
+  z-index: 45;
 }
 
-#timer-container {
-  margin-top: 20px;
-}
-
+/* ---------- sketchy inputs & buttons ---------- */
 .time-input {
-  padding: 8px;
-  border: 2px solid #ff4500;
-  border-radius: 10px;
+  display: block;
+  margin: 0 auto 10px;
+  padding: 7px 12px;
+  border: 2px solid var(--pencil);
+  border-radius: var(--wobble);
   font-size: 18px;
-  margin-right: 10px;
-  background: #ffffff;
-  color: #000000;
+  font-family: inherit;
+  background: #fffdf6;
+  color: var(--ink);
+  box-shadow: 2px 3px 0 var(--pencil-soft);
+  outline: none;
+}
+.time-input:focus {
+  box-shadow:
+    2px 3px 0 var(--pencil-soft),
+    0 0 0 3px rgba(240, 192, 90, 0.4);
 }
 
 .timer-button {
-  padding: 6px 14px;
-  background: #1e90ff; /* DodgerBlue color */
-  color: white;
-  border: none;
-  border-radius: 10px;
+  padding: 6px 16px;
+  background: #fffdf6;
+  color: var(--ink);
+  border: 2px solid var(--pencil);
+  border-radius: var(--wobble);
   cursor: pointer;
   font-size: 16px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  box-shadow: 2px 3px 0 var(--pencil-soft);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background 0.15s ease;
 }
-
 .timer-button:hover {
-  background: #1c86ee; /* Slightly darker blue */
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 4px 0 var(--pencil-soft);
+}
+.timer-button:active {
+  transform: translate(1px, 2px);
+  box-shadow: 0 1px 0 var(--pencil-soft);
+}
+.timer-button:focus-visible {
+  outline: 2px dashed var(--ink);
+  outline-offset: 3px;
 }
 
+/* ---------- cozy color palette ---------- */
+#set-timer {
+  background: var(--sage);
+  color: var(--paper);
+}
+#set-timer:hover {
+  background: var(--sage-deep);
+}
+#reset-timer,
 .timer-button.reset {
-  background: #f44336;
-  margin-left: 10px;
+  background: var(--terracotta);
+  color: var(--paper);
+}
+#reset-timer:hover,
+.timer-button.reset:hover {
+  background: var(--terracotta-deep);
+}
+#start-stopwatch {
+  background: var(--ochre);
+  color: var(--ink);
+}
+#start-stopwatch:hover {
+  background: var(--ochre-deep);
+}
+#start-pomodoro {
+  background: var(--plum);
+  color: var(--paper);
+}
+#start-pomodoro:hover {
+  background: var(--plum-deep);
+}
+#pause-stopwatch {
+  background: var(--sky);
+  color: var(--ink);
+}
+#pause-stopwatch:hover {
+  background: var(--sky-deep);
+}
+#new-stopwatch {
+  background: var(--sage);
+  color: var(--paper);
+}
+#new-stopwatch:hover {
+  background: var(--sage-deep);
 }
 
-.timer-button.reset:hover {
-  background: #d32f2f;
+/* ---------- clock / countdown lettering ---------- */
+#clock {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 15px 0;
+  font-family: "Gaegu", cursive;
+  color: var(--terracotta);
 }
 
 .countdown {
-  margin-top: 20px;
-  font-size: 20px;
-  color: #ff4500;
-  text-shadow: 1px 1px #000000;
+  margin-top: 16px;
+  font-size: 22px;
+  font-family: "Gaegu", "Patrick Hand", cursive;
+  font-weight: 700;
+  color: var(--terracotta);
+  min-height: 24px;
 }
 
-button {
-  margin-top: 10px;
+/* ---------- popup layout ---------- */
+#timer-container {
+  margin-top: 46px;
+  position: relative;
 }
 
-.time-up {
-  background-color: #ff3737;
-  color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-}
-
-.time-up #timer {
-  font-size: 48px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #ffffff;
-  text-shadow: 2px 2px #000000;
-}
-
-.stopwatch-container {
-  margin-top: 20px;
-  border-top: 1px solid #ff4500;
-  padding-top: 15px;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
-.timer-button.stopwatch {
-  background: #ff8c00;
-}
-
-.timer-button.stopwatch:hover {
-  background: #ff6347;
-}
-
-.timer-button.pomodoro {
-  background: #6a0dad;
-}
-
-.timer-button.pomodoro:hover {
-  background: #7b1fa2;
-}
-
-.stopwatch-body {
-  background-color: #f7b733;
-  padding: 10px;
-  margin: 0;
-  text-align: center;
-}
-
-.stopwatch-display {
-  margin-bottom: 10px;
-}
-
-.stopwatch-controls {
+.button-row {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-top: 6px;
 }
 
-/* Make buttons smaller but still usable */
+.time-diff-container {
+  margin-top: 24px;
+}
+
+.time-diff-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.time-diff-inputs .time-input {
+  display: inline-block;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  padding: 6px 8px;
+  box-sizing: border-box;
+}
+
+.time-separator {
+  font-size: 16px;
+  color: var(--ink);
+  opacity: 0.75;
+}
+
+/* ---------- dashed pencil divider with paw print ---------- */
+.pencil-divider {
+  position: relative;
+  margin: 22px 4px 6px;
+  border-top: 2px dashed rgba(74, 63, 53, 0.5);
+}
+.pencil-divider .paw {
+  position: absolute;
+  left: 50%;
+  top: -1px;
+  transform: translate(-50%, -50%) rotate(-10deg);
+  background: var(--paper);
+  padding: 2px 8px;
+  line-height: 0;
+}
+
+/* ---------- timer numbers ---------- */
+.time {
+  padding: 10px 18px;
+  background: var(--paper);
+  border: 2px solid var(--pencil);
+  border-radius: var(--wobble);
+  display: inline-block;
+  font-size: 26px;
+  font-family: "Gaegu", cursive;
+  font-weight: 700;
+  color: var(--ink);
+  box-shadow: 2px 3px 0 var(--pencil-soft);
+}
+
+.time-up {
+  background: var(--terracotta);
+  color: var(--paper);
+  padding: 20px;
+  border-radius: var(--wobble);
+  box-shadow: 2px 3px 0 var(--pencil-soft);
+}
+.time-up #timer {
+  font-size: 48px;
+  font-family: "Gaegu", cursive;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--paper);
+}
+
+/* ---------- stopwatch page: warm golden craft card ---------- */
+.stopwatch-body {
+  background: var(--honey);
+  padding: 16px;
+  margin: 0;
+}
+.stopwatch-display {
+  margin: 6px 0 12px;
+}
+.stopwatch-controls {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin: 2px 0 4px;
+}
 .stopwatch-controls .timer-button {
-  padding: 6px 12px;
+  padding: 4px 10px;
   font-size: 14px;
 }
-
-/* Style for the End button */
-.stopwatch-controls .timer-button.reset {
-  background: #f44336;
-}
-
-.stopwatch-controls .timer-button.reset:hover {
-  background: #d32f2f;
-}
-
-#stopwatch {
-  font-size: 24px;
-  font-weight: bold;
-  color: #000;
-  background-color: #ffeb3b;
-  padding: 8px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-}
-
 #final-time {
-  font-size: 18px;
-  color: #ff4500;
-  margin-top: 15px;
+  font-size: 20px;
+  font-family: "Gaegu", cursive;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 14px;
+}
+
+/* ============================================================
+   Hand-drawn cats & doodles (pure SVG + CSS)
+   ============================================================ */
+
+/* --- peeking ginger tabby perched on the first input --- */
+.cat-peek {
+  position: absolute;
+  top: -55px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88px;
+  height: auto;
+  pointer-events: none;
+}
+.peek-tail {
+  transform-box: fill-box;
+  transform-origin: 12% 92%;
+  animation: tail-wag 2.6s ease-in-out infinite;
+}
+@keyframes tail-wag {
+  0%,
+  100% {
+    transform: rotate(-9deg);
+  }
+  50% {
+    transform: rotate(11deg);
+  }
+}
+
+/* --- sleeping calico cat, bottom-right, with floating Zzz --- */
+.calico {
+  position: fixed;
+  right: 8px;
+  bottom: 6px;
+  width: 118px;
+  height: auto;
+  pointer-events: none;
+  z-index: 30;
+}
+.calico .z1,
+.calico .z2,
+.calico .z3 {
+  transform-box: fill-box;
+  animation: zzz-float 3.2s ease-in-out infinite;
+}
+.calico .z2 {
+  animation-delay: 1s;
+}
+.calico .z3 {
+  animation-delay: 2s;
+}
+@keyframes zzz-float {
+  0% {
+    opacity: 0;
+    transform: translate(0, 6px);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(6px, -12px);
+  }
+}
+
+/* --- trotting tabby above the stopwatch display --- */
+.trot-cat {
+  width: 118px;
+  margin: 0 auto 2px;
+  display: block;
+}
+.trot-cat .leg {
+  transform-box: fill-box;
+  transform-origin: 50% 10%;
+  animation: leg-swing 0.55s ease-in-out infinite;
+}
+.trot-cat .leg.f1,
+.trot-cat .leg.b2 {
+  animation-delay: 0s;
+}
+.trot-cat .leg.f2,
+.trot-cat .leg.b1 {
+  animation-delay: -0.275s;
+}
+@keyframes leg-swing {
+  0%,
+  100% {
+    transform: rotate(13deg);
+  }
+  50% {
+    transform: rotate(-13deg);
+  }
+}
+.trot-cat .trot-body {
+  animation: trot-bounce 0.55s ease-in-out infinite;
+}
+@keyframes trot-bounce {
+  0%,
+  100% {
+    transform: translateY(0.5px);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+.trot-cat .trot-tail {
+  transform-box: fill-box;
+  transform-origin: 88% 92%;
+  animation: tail-flick 0.55s ease-in-out infinite;
+}
+@keyframes tail-flick {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+
+/* --- respect users who prefer stillness --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

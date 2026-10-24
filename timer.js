@@ -5,6 +5,47 @@ const notificationSound = new Audio("idiot.mp3");
 let notificationPlayed = false;
 let timerInterval;
 let isPaused = false; // Track if timer is paused
+let appliedWindowHeight;
+
+const CUSTOM_TIMER_WINDOW_HEIGHT = 150;
+const TARGET_TIME_WINDOW_HEIGHT = 110;
+
+function resizeTimerWindow(isCustomTimer) {
+  const height = isCustomTimer
+    ? CUSTOM_TIMER_WINDOW_HEIGHT
+    : TARGET_TIME_WINDOW_HEIGHT;
+
+  if (appliedWindowHeight === height) {
+    return;
+  }
+
+  chrome.windows.getCurrent((currentWindow) => {
+    if (chrome.runtime.lastError) {
+      console.error(
+        "Unable to get the timer window:",
+        chrome.runtime.lastError.message,
+      );
+      return;
+    }
+
+    if (typeof currentWindow.id !== "number") {
+      console.error("Unable to resize the timer window: missing window ID.");
+      return;
+    }
+
+    chrome.windows.update(currentWindow.id, { height }, () => {
+      if (chrome.runtime.lastError) {
+        console.error(
+          "Unable to resize the timer window:",
+          chrome.runtime.lastError.message,
+        );
+        return;
+      }
+
+      appliedWindowHeight = height;
+    });
+  });
+}
 
 // Focus the window when the timer is loaded
 window.onload = () => {
@@ -56,8 +97,9 @@ function createPauseButton() {
 
   // Check if this is a custom timer and show the button accordingly
   chrome.storage.local.get(["customTime", "targetTime"], (result) => {
-    pauseButton.style.display =
-      result.customTime && !result.targetTime ? "block" : "none";
+    const isCustomTimer = Boolean(result.customTime && !result.targetTime);
+    pauseButton.style.display = isCustomTimer ? "block" : "none";
+    resizeTimerWindow(isCustomTimer);
   });
 }
 
@@ -75,10 +117,11 @@ function updateTimer() {
 
     // Show/hide pause button based on timer type
     const pauseButton = document.getElementById("pauseButton");
+    const isCustomTimer = Boolean(result.customTime && !result.targetTime);
     if (pauseButton) {
-      pauseButton.style.display =
-        result.customTime && !result.targetTime ? "block" : "none";
+      pauseButton.style.display = isCustomTimer ? "block" : "none";
     }
+    resizeTimerWindow(isCustomTimer);
 
     let diff;
     if (result.targetTime) {

@@ -1,26 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <title>Time's Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Patrick+Hand&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      html {
+        background: #fbf7ef;
+      }
+
       body {
         margin: 0;
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Arial, sans-serif;
+        padding: 8px 8px;
+        width: 100%;
+        box-sizing: border-box;
+        background: #fbf7ef;
+        color: #3d342e;
+        font-family: "Patrick Hand", "Comic Sans MS", cursive;
         font-size: 16px;
-        border-radius: 8px;
+        border-radius: 14px 18px 12px 20px / 18px 12px 20px 14px;
+        box-shadow:
+          0 0 0 2px rgba(74, 63, 53, 0.15),
+          2px 3px 0 rgba(74, 63, 53, 0.25);
         user-select: none;
+        text-align: center;
+        overflow: hidden;
       }
       #timer {
         text-align: center;
-        font-weight: bold;
+        font-family: "Gaegu", cursive;
+        font-weight: 700;
+        font-size: 30px;
+        line-height: 1.15;
+      }
+      /* little sleeping-cat Zzz accent, hidden while the alert is red */
+      .zzz-note {
+        display: block;
+        margin-top: 2px;
+        font-family: "Gaegu", cursive;
+        font-weight: 700;
+        font-size: 14px;
+        color: #8c6583;
+        letter-spacing: 2px;
       }
     </style>
   </head>
   <body>
     <div id="timer">Loading...</div>
+    <span class="zzz-note" aria-hidden="true">~ z Z z ~</span>
     <script type="module" src="timer.js"></script>
   </body>
 </html>
