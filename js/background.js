@@ -5,6 +5,7 @@ const ANIMATION_INTERVAL = 1 / 120; // minutes
 
 let frameImageData = [];
 let currentFrame = 0;
+let loadPromise = null;
 
 /* ── Load & composite every GIF frame ─────────────────────────── */
 async function loadGifFrames() {
@@ -80,6 +81,9 @@ function interlaceMap(h) {
 
 /* ── Cycle frames ─────────────────────────────────────────────── */
 async function animateIcon() {
+  if (frameImageData.length === 0 && loadPromise) {
+    await loadPromise;
+  }
   if (frameImageData.length === 0) return;
   try {
     await chrome.action.setIcon({
@@ -91,16 +95,17 @@ async function animateIcon() {
   }
 }
 
+/* ── Top-level synchronous alarm listener ─────────────────────── */
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === "iconAnimation") {
+    animateIcon();
+  }
+});
+
 /* ── Bootstrap ────────────────────────────────────────────────── */
-loadGifFrames().then(() => {
+loadPromise = loadGifFrames().then(() => {
   chrome.alarms.create("iconAnimation", {
     periodInMinutes: ANIMATION_INTERVAL,
-  });
-
-  chrome.alarms.onAlarm.addListener((alarm) => {
-    if (alarm.name === "iconAnimation") {
-      animateIcon();
-    }
   });
 
   animateIcon();

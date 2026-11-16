@@ -20,18 +20,24 @@ chrome.storage.local.get(
     if (result.stopwatchRunning) {
       startTime = result.stopwatchStartTime;
       elapsedTime = result.stopwatchElapsed || 0;
-      running = true;
+      running = false;
       startStopwatch();
       pauseButton.textContent = "Pause";
-    } else if (result.stopwatchElapsed) {
+    } else if (typeof result.stopwatchElapsed === "number") {
       elapsedTime = result.stopwatchElapsed;
+      running = false;
       setCatMotion(false);
+      pauseButton.textContent = "Start";
       updateDisplay();
+    } else {
+      startStopwatch();
+      pauseButton.textContent = "Pause";
     }
   }
 );
 
 function startStopwatch() {
+  clearInterval(stopwatchInterval);
   if (!running) {
     startTime = Date.now() - elapsedTime;
     running = true;
@@ -83,7 +89,6 @@ function stopStopwatch() {
 function updateDisplay() {
   if (running) {
     elapsedTime = Date.now() - startTime;
-    chrome.storage.local.set({ stopwatchElapsed: elapsedTime });
   }
 
   stopwatchDisplay.textContent = formatStopwatchTime(elapsedTime);
@@ -117,14 +122,3 @@ newButton.addEventListener("click", () => {
   updateDisplay();
   pauseButton.textContent = "Pause";
 });
-
-// endButton.addEventListener("click", endStopwatch);
-
-// Add event listener for window close
-window.addEventListener("beforeunload", () => {
-  // Stop the stopwatch completely when window is closed
-  endStopwatch();
-});
-
-// Start the stopwatch automatically when the page loads
-startStopwatch();

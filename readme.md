@@ -18,7 +18,7 @@ A Chrome extension with an **always-animated icon** to keep important deadlines 
 ### 📌 Additional Features
 - Floating timer window
 - Visual notifications when time is up
-- Naruto-inspired theme
+- Cozy Hand-Drawn Sketchbook & Cat theme
 - Stopwatch with pause/resume controls
 
 ## Installation

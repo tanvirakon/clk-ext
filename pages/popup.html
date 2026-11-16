@@ -103,18 +103,20 @@
         readonly
         placeholder="Select time"
         autocomplete="off"
+        aria-label="Target Time"
       />
       <input
         type="number"
         id="custom-time"
         class="time-input"
         placeholder="Custom time (minutes)"
+        aria-label="Custom time in minutes"
       />
       <div class="button-row">
         <button id="set-timer" class="timer-button">Set Timer</button>
         <button id="reset-timer" class="timer-button reset">Reset</button>
       </div>
-      <div id="countdown" class="countdown"></div>
+      <div id="countdown" class="countdown" role="timer" aria-live="polite"></div>
     </div>
 
     <!-- New time difference calculator section -->
@@ -127,6 +129,7 @@
           readonly
           placeholder="From"
           autocomplete="off"
+          aria-label="From time"
         />
         <span class="time-separator">to</span>
         <input
@@ -136,6 +139,7 @@
           readonly
           placeholder="To"
           autocomplete="off"
+          aria-label="To time"
         />
       </div>
       <div id="time-difference" class="countdown"></div>

@@ -68,6 +68,8 @@ function setCurrentTimeAsDefault() {
 // Call this function when the page loads
 setCurrentTimeAsDefault();
 
+let customEndTime = null;
+
 function updateCountdown() {
   const targetTime = targetTimeInput.value;
   const customTime = customTimeInput.value;
@@ -98,10 +100,11 @@ function updateCountdown() {
         time.seconds
       );
     }
-  } else if (customTime) {
-    const now = new Date();
-    const targetDate = new Date(now.getTime() + customTime * 60 * 1000);
-    const diff = targetDate - now;
+  } else if (customEndTime || customTime) {
+    if (!customEndTime && customTime) {
+      customEndTime = Date.now() + parseFloat(customTime) * 60 * 1000;
+    }
+    const diff = customEndTime ? customEndTime - Date.now() : 0;
     if (diff <= 0) {
       countdownElement.textContent = "Time is up!";
     } else {
@@ -115,9 +118,21 @@ function updateCountdown() {
   }
 }
 
-chrome.storage.local.get("targetTime", (result) => {
+customTimeInput.addEventListener("input", () => {
+  if (customTimeInput.value) {
+    customEndTime = Date.now() + parseFloat(customTimeInput.value) * 60 * 1000;
+  } else {
+    customEndTime = null;
+  }
+  updateCountdown();
+});
+
+chrome.storage.local.get(["targetTime", "customTime"], (result) => {
   if (result.targetTime) {
     targetTimeInput.value = result.targetTime;
+    updateCountdown();
+  } else if (result.customTime) {
+    customEndTime = Date.now() + result.customTime * 1000;
     updateCountdown();
   }
 });
@@ -127,15 +142,9 @@ setInterval(updateCountdown, 1000);
 resetTimerButton.addEventListener("click", () => {
   targetTimeInput.value = "";
   customTimeInput.value = "";
-  chrome.storage.local.remove("targetTime", () => {
-    chrome.tabs.query({}, function (tabs) {
-      tabs.forEach((tab) => {
-        chrome.tabs.sendMessage(tab.id, {
-          action: "resetCountdown",
-        });
-      });
-    });
-  });
+  customEndTime = null;
+  countdownElement.textContent = "";
+  chrome.storage.local.remove(["targetTime", "customTime"]);
 });
 
 // Function to calculate time difference between two time inputs

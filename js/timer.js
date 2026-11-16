@@ -52,11 +52,6 @@ window.onload = () => {
   window.focus();
   setFromInputToCurrentTime();
 
-  // Clear any stored "fromTime" value
-  chrome.storage.local.remove("fromTime", () => {
-    console.log("Cleared stored fromTime value");
-  });
-
   // Create pause button for custom timer
   createPauseButton();
 };
@@ -104,16 +99,11 @@ function createPauseButton() {
 }
 
 function updateTimer() {
-  // Always set the from input to current time before checking storage
-
   chrome.storage.local.get(["targetTime", "customTime"], (result) => {
     if (!result.targetTime && !result.customTime) {
       notificationPlayed = false;
       return;
     }
-
-    // Focus the window again when timer values are detected
-    window.focus();
 
     // Show/hide pause button based on timer type
     const pauseButton = document.getElementById("pauseButton");
@@ -134,8 +124,8 @@ function updateTimer() {
       const now = new Date();
       diff = targetDate - now;
 
-      // If the target time is earlier than now, assume it's for the next day
-      if (diff <= 0) {
+      // If the target time was set for earlier today (more than 1 minute ago), assume it's for the next day
+      if (diff < -60000) {
         targetDate.setDate(targetDate.getDate() + 1);
         diff = targetDate - now;
       }
@@ -143,7 +133,7 @@ function updateTimer() {
       diff = result.customTime * 1000;
     }
 
-    if (diff <= 1000) {
+    if (diff <= 0) {
       document.getElementById("timer").textContent = "Time is up!";
       document.body.style.background = "rgba(220, 53, 69, 0.9)";
 
